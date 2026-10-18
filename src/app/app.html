@@ -1,0 +1,278 @@
+<div
+  class="app-shell"
+  (dragover)="dragOver($event)"
+  (drop)="drop($event)"
+  [class.dragging]="dragging()"
+  (dragleave)="dragging.set(false)"
+>
+  <header class="app-header">
+    <a class="brand" href="./" aria-label="Chess Diagrams — home"
+      ><span class="brand-icon" aria-hidden="true">♞</span
+      ><span>Chess<span class="brand-light">Diagrams</span><small>CHESS IN FOCUS</small></span></a
+    >
+    <span class="local-label"><span class="local-dot"></span> Files stay on your device</span>
+    <label class="button primary upload-button" for="file-input"
+      ><span aria-hidden="true">＋</span> Open file</label
+    >
+    <input
+      id="file-input"
+      type="file"
+      accept=".pdf,.png,.jpg,.jpeg,.webp"
+      (change)="choose($event)"
+    />
+  </header>
+
+  <main [attr.inert]="selected() !== null || passwordNeeded() ? '' : null">
+    @if (error()) {
+      <div class="error-banner" role="alert">
+        {{ error()
+        }}<button class="plain" (click)="error.set('')" aria-label="Dismiss message">×</button>
+      </div>
+    }
+    @if (!pageCount() && !busy()) {
+      <section class="welcome">
+        <span class="eyebrow">FROM PAGE TO POSITION</span>
+        <h1>Every diagram.<br /><span>Every detail.</span></h1>
+        <p class="intro">
+          Open a page from a chess book.<br />Click a diagram and focus on the position.
+        </p>
+        <label class="dropzone" for="file-input">
+          <span class="mini-board" aria-hidden="true"
+            ><span>♜</span><span>♞</span><span>♝</span><span>♛</span><span></span><span>♙</span
+            ><span></span><span>♙</span><span>♙</span><span></span><span>♙</span><span></span
+            ><span>♖</span><span>♘</span><span>♗</span><span>♔</span></span
+          >
+          <strong>Drop your page here</strong><span>or click to choose a file</span>
+          <small>PDF · PNG · JPEG · WebP <span class="dot-separator">/</span> up to 100 MB</small>
+        </label>
+        <div class="steps">
+          <span><b>01</b> Open a file</span><span><b>02</b> Let us find the boards</span
+          ><span><b>03</b> Click a diagram</span>
+        </div>
+      </section>
+    }
+    <section class="workspace" [hidden]="!pageCount()">
+      <div class="document-bar">
+        <div class="document-name">
+          <span class="file-icon" aria-hidden="true">▤</span>
+          <div>
+            <h1>{{ fileName() }}</h1>
+            <span>Local document</span>
+          </div>
+        </div>
+        <nav class="page-nav" aria-label="Page navigation">
+          <button
+            (click)="changePage(page() - 1)"
+            [disabled]="page() <= 1 || busy()"
+            aria-label="Previous page"
+          >
+            ← Previous
+          </button>
+          <label
+            >Page
+            <input
+              type="number"
+              min="1"
+              [max]="pageCount()"
+              [value]="page()"
+              (change)="changePage(+$any($event.target).value)"
+              [disabled]="busy()"
+              aria-label="Page number"
+            />
+            of {{ pageCount() }}</label
+          >
+          <button
+            (click)="changePage(page() + 1)"
+            [disabled]="page() >= pageCount() || busy()"
+            aria-label="Next page"
+          >
+            Next →
+          </button>
+        </nav>
+      </div>
+      <div class="tools">
+        <div class="detection-status" role="status" aria-live="polite">
+          @if (searching()) {
+            <span class="spinner small"></span><span>Finding chessboards…</span>
+          } @else {
+            <span class="status-dot" [class.found]="regions().length > 0"></span
+            ><span>{{ boardLabel() }}</span>
+          }
+        </div>
+        <div class="tool-buttons">
+          <button
+            (click)="pageZoom.set(pageZoom() === 1 ? 1.5 : pageZoom() === 1.5 ? 2 : 1)"
+            [disabled]="busy()"
+            aria-label="Change page zoom"
+          >
+            {{ pageZoom() === 1 ? 'Fit page' : pageZoom() * 100 + '%' }}</button
+          ><button
+            [class.active]="showFrames()"
+            [attr.aria-pressed]="showFrames()"
+            (click)="showFrames.set(!showFrames())"
+          >
+            Board outlines</button
+          ><button (click)="rotate()" [disabled]="busy()" aria-label="Rotate page 90 degrees">
+            ↻ Rotate
+          </button>
+        </div>
+      </div>
+      @if (detectionError()) {
+        <p class="notice" role="alert">{{ detectionError() }}</p>
+      }
+      @if (!searching() && !busy() && !regions().length && !detectionError()) {
+        <p class="notice">No boards found on this page. Try another page or file.</p>
+      }
+      <div class="page-stage" [attr.aria-busy]="busy()">
+        <div
+          class="paper"
+          [style.width.px]="pageWidth() * pageZoom()"
+          [style.max-width]="pageZoom() > 1 ? 'none' : '100%'"
+          [style.aspect-ratio]="ratio()"
+          [class.page-loading]="busy()"
+        >
+          <canvas #pageCanvas [style.filter]="filter()" aria-label="Current document page"></canvas>
+          @for (region of regions(); track $index) {
+            <button
+              class="region"
+              [class.frames-visible]="showFrames()"
+              [style.left.%]="region.x * 100"
+              [style.top.%]="region.y * 100"
+              [style.width.%]="region.width * 100"
+              [style.height.%]="region.height * 100"
+              (click)="openDetail($index, $event.currentTarget)"
+              [attr.aria-label]="'Enlarge diagram ' + ($index + 1)"
+            >
+              <span class="region-number">{{ $index + 1 }} <span aria-hidden="true">↗</span></span>
+            </button>
+          }
+        </div>
+        @if (busy()) {
+          <div class="stage-loading" role="status">
+            <span class="spinner"></span>Preparing page…
+          </div>
+        }
+      </div>
+      <div class="below-page">
+        <span>Click a diagram to enlarge it</span><span>← → &nbsp; Switch pages</span>
+      </div>
+      <div class="render-controls">
+        <label
+          >Brightness
+          <input
+            type="range"
+            min="0.5"
+            max="1.5"
+            step="0.05"
+            [value]="brightness()"
+            (input)="adjust('brightness', $event)"
+        /></label>
+        <label
+          >Contrast
+          <input
+            type="range"
+            min="0.7"
+            max="1.5"
+            step="0.05"
+            [value]="contrast()"
+            (input)="adjust('contrast', $event)"
+        /></label>
+        <button class="plain" (click)="reset()">Reset</button>
+      </div>
+    </section>
+    @if (busy() && !pageCount() && !passwordNeeded()) {
+      <div class="initial-loading" role="status">
+        <span class="spinner"></span>
+        <h1>Opening document…</h1>
+        <p>{{ fileName() }}</p>
+      </div>
+    }
+  </main>
+  <footer class="app-footer">
+    <span>Chess Diagrams</span><span>Fewer distractions. More chess.</span>
+  </footer>
+  @if (dragging()) {
+    <div class="drop-overlay">Drop the file to open it</div>
+  }
+</div>
+
+<div
+  id="diagram-dialog"
+  class="diagram-dialog"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="diagram-title"
+  [hidden]="selected() === null"
+>
+  <div class="detail-toolbar">
+    <button #closeButton (click)="closeDetail()" class="back-button">
+      ← <span>Back to page</span>
+    </button>
+    <h2 id="diagram-title">
+      Diagram {{ (selected() ?? 0) + 1 }} <span>/ {{ regions().length }}</span>
+    </h2>
+    <div class="detail-actions">
+      <button (click)="setZoom(zoom() - 0.25)" [disabled]="zoom() <= 1" aria-label="Zoom out">
+        −</button
+      ><button (click)="setZoom(1)" aria-label="Fit diagram">
+        {{ (zoom() * 100).toFixed(0) }}%</button
+      ><button (click)="setZoom(zoom() + 0.25)" [disabled]="zoom() >= 4" aria-label="Zoom in">
+        ＋</button
+      ><button (click)="fullscreen()" aria-label="Toggle full screen">⛶ Full screen</button>
+    </div>
+  </div>
+  <div
+    #detailViewport
+    class="detail-viewport"
+    [class.zoomed]="zoom() > 1"
+    (wheel)="wheel($event)"
+    (pointerdown)="panStart($event)"
+    (pointermove)="panMove($event)"
+    (pointerup)="panEnd($event)"
+    (pointercancel)="panEnd($event)"
+  >
+    <div class="detail-content">
+      <canvas
+        #detailCanvas
+        [style.filter]="filter()"
+        [style.visibility]="detailBusy() ? 'hidden' : 'visible'"
+        role="img"
+        [attr.aria-label]="'Chess diagram ' + ((selected() ?? 0) + 1)"
+      ></canvas>
+    </div>
+    @if (detailBusy()) {
+      <div class="stage-loading" role="status"><span class="spinner"></span>Enlarging diagram…</div>
+    }
+  </div>
+  <div class="detail-footer">
+    <button (click)="nextDetail(-1)" [disabled]="selected() === 0 || detailBusy()">
+      ← Previous</button
+    ><span>Page {{ page() }} <span class="detail-hint">· Esc — back to page</span></span
+    ><button
+      (click)="nextDetail(1)"
+      [disabled]="selected() === regions().length - 1 || detailBusy()"
+    >
+      Next →
+    </button>
+  </div>
+</div>
+@if (passwordNeeded()) {
+  <div class="password-overlay">
+    <form
+      class="password-card"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="password-title"
+      (submit)="$event.preventDefault(); submitPassword(password.value)"
+    >
+      <h2 id="password-title">PDF password</h2>
+      <p>{{ passwordHint() }}</p>
+      <label for="pdf-password">Document password</label
+      ><input #password id="pdf-password" type="password" required autocomplete="off" />
+      <div>
+        <button type="button" (click)="cancelPassword()">Cancel</button
+        ><button class="primary" type="submit">Open</button>
+      </div>
+    </form>
+  </div>
+}

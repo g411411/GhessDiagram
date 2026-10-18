@@ -1,0 +1,32 @@
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: #f7f8f2;
+  font-family: Inter, 'Segoe UI', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+* {
+  box-sizing: border-box;
+}
+body:has(.diagram-dialog:not([hidden])) {
+  overflow: hidden;
+}
+input,
+button {
+  font-family: inherit;
+}
+label[for='file-input'] {
+  cursor: pointer;
+}
+#file-input:focus-visible {
+  position: fixed;
+  width: 180px;
+  height: auto;
+  clip-path: none;
+  z-index: 70;
+  top: 8px;
+  right: 8px;
+  background: white;
+  padding: 12px;
+}
