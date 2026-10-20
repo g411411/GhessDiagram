@@ -26,3 +26,18 @@ Sources:
 https://developers.cloudflare.com/pages/framework-guides/deploy-an-angular-site/
 https://developers.cloudflare.com/pages/platform/limits/
 https://developers.cloudflare.com/pages/configuration/build-image/
+
+## Existing Workers project (ghessdiagram)
+
+If the dashboard shows a Deploy command, the project uses Workers Builds. This repository now includes wrangler.jsonc for the existing ghessdiagram Worker with static assets.
+
+Set Settings > Build to:
+- Build command: npm run build:cloudflare
+- Deploy command: npx wrangler deploy
+- Root directory: /
+
+The screenshot's dependency installation and compilation already succeeded, so keep the existing install settings. The Cloudflare-specific build is required for the oversized PDF. The Wrangler configuration points to the generated browser directory; no Worker entry-point script is needed for an assets-only deployment.
+
+After successful deployment, open Settings > Domains & Routes > Add > Custom Domain, and enter chess.hintscloud.com. Complete the domain setup in the dashboard. Configuring this repository does not publish the Worker or create a custom domain by itself.
+
+Worker documentation: https://developers.cloudflare.com/workers/static-assets/
