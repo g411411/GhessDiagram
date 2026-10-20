@@ -14,10 +14,19 @@ import type {
   RenderTask,
 } from 'pdfjs-dist';
 import { Region } from './detector';
+import { VIDEO_LIBRARY } from './video-library';
 import { PDF_LIBRARY, LibraryEntry } from './pdf-library';
 
 @Component({ selector: 'app-root', templateUrl: './app.html', styleUrl: './app.css' })
 export class App implements OnDestroy {
+  readonly videos = VIDEO_LIBRARY;
+  readonly videosVisible = signal(false);
+  toggleVideos() {
+    this.closeDetail();
+    this.videosVisible.update((value) => !value);
+    this.libraryVisible.set(false);
+    this.cancelLibraryRequest();
+  }
   readonly library = PDF_LIBRARY;
   readonly libraryVisible = signal(false);
   readonly libraryQuery = signal('');
@@ -32,6 +41,7 @@ export class App implements OnDestroy {
   private libraryRequest?: AbortController;
 
   toggleLibrary() {
+    this.videosVisible.set(false);
     this.closeDetail();
     this.libraryVisible.update((value) => !value);
     if (!this.libraryVisible()) this.cancelLibraryRequest();
@@ -150,6 +160,7 @@ export class App implements OnDestroy {
     this.error.set('');
     this.detectionError.set('');
     this.fileName.set(file.name);
+    this.videosVisible.set(false);
     this.documentOrigin.set(origin);
     this.libraryVisible.set(false);
     this.pageCount.set(0);

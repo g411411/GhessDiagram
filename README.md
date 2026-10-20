@@ -52,7 +52,6 @@ Limits: 100 MiB/file, 500 PDF pages, 40 megapixels per image. Analysis is limite
 
 Unit tests cover solid, colored, hatched and borderless synthetic boards, an empty page, independent results on different pages, upload format/size validation and the initial UI. Browser checks cover actual PDF upload, selecting a middle board, next board, Escape, and page navigation. Sample checks on the first pages of six original PDFs returned 9, 9, 9, 9, 9 and 6 boards. Counts alone are not precision/recall measurements; a separately annotated held-out corpus is still needed to validate broad coverage.
 
-
 ## Deployment
 
 Build with relative asset paths for root or subfolder hosting:
@@ -61,7 +60,6 @@ Build with relative asset paths for root or subfolder hosting:
 
 Upload the contents of dist/ChessDiagrams/browser/ and dist/ChessDiagrams/3rdpartylicenses.txt to static hosting. Preserve the pdfjs/ directory. See [deployment instructions](docs/DEPLOYMENT_RU.md).
 
-
 ## Website PDF library
 
 Use **PDF Library** in the header to browse and search the twelve bundled books and worksheets. **Open PDF** downloads the selected file from the same website and opens the normal diagram viewer. Local file upload remains available. The library requires a network connection to the website; it does not require access to files on the user's computer.
@@ -69,3 +67,7 @@ Use **PDF Library** in the header to browse and search the twelve bundled books 
 The original PDFs are stored in `public/library/` and are copied by Angular into `dist/ChessDiagrams/browser/library/`. The catalog is `src/app/pdf-library.ts`. To add a document, copy it into `public/library/` and add its filename, title and size to the catalog. Include the entire `library/` directory when deploying. These files are served to visitors as normal website assets.
 
 Library fetching supports filenames with spaces, root and subfolder hosting, cancellation, missing-file errors and rejection of HTML returned by a misconfigured server. Library PDFs use exactly the same rendering/detection path and file-size/page-count limits as local PDFs.
+
+## Video lessons
+
+Video Library lists five curated YouTube lessons. Watch on YouTube opens the selected lesson in a new tab, preserving the current PDF. Videos remain hosted on YouTube and require internet access; no embedded player or video downloads are used. The catalog is src/app/video-library.ts.

@@ -19,6 +19,14 @@
     >
       PDF Library
     </button>
+    <button
+      class="library-toggle"
+      (click)="toggleVideos()"
+      [attr.aria-expanded]="videosVisible()"
+      aria-controls="video-library"
+    >
+      Video Library
+    </button>
     <label class="button primary upload-button" for="file-input"
       ><span aria-hidden="true">＋</span> Open file</label
     >
@@ -84,13 +92,48 @@
         required.
       </p>
     </section>
+    <section
+      id="video-library"
+      class="library-panel"
+      [hidden]="!videosVisible()"
+      aria-labelledby="video-library-title"
+    >
+      <div class="library-heading">
+        <div>
+          <span class="eyebrow">WATCH AND LEARN</span>
+          <h1 id="video-library-title">Video Library</h1>
+          <p>Choose a chess lesson. Videos open on YouTube in a new tab.</p>
+        </div>
+        <button (click)="toggleVideos()">Close video library</button>
+      </div>
+      <div class="library-grid">
+        @for (video of videos; track video.url) {
+          <article class="library-card">
+            <span>YouTube lesson</span>
+            <h2>{{ video.title }}</h2>
+            <a
+              class="button primary"
+              [href]="video.url"
+              target="_blank"
+              rel="noopener noreferrer"
+              [attr.aria-label]="'Watch ' + video.title + ' on YouTube (opens in a new tab)'"
+              >Watch on YouTube ↗</a
+            >
+          </article>
+        }
+      </div>
+      <p class="library-note">
+        YouTube is an external website. An internet connection is required.
+      </p>
+    </section>
+
     @if (error()) {
       <div class="error-banner" role="alert">
         {{ error()
         }}<button class="plain" (click)="error.set('')" aria-label="Dismiss message">×</button>
       </div>
     }
-    @if (!pageCount() && !busy() && !libraryVisible()) {
+    @if (!pageCount() && !busy() && !libraryVisible() && !videosVisible()) {
       <section class="welcome">
         <span class="eyebrow">FROM PAGE TO POSITION</span>
         <h1>Every diagram.<br /><span>Every detail.</span></h1>

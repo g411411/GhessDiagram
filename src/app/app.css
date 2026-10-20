@@ -818,7 +818,6 @@ button:not(.region),
 
 .library-toggle {
   background: #f4f8e9;
-  border-color: #f4f8e9;
   white-space: nowrap;
 }
 .library-panel {
@@ -878,7 +877,8 @@ button:not(.region),
   margin: 14px 0 24px;
   overflow-wrap: anywhere;
 }
-.library-card button {
+.library-card button,
+.library-card .button {
   margin-top: auto;
 }
 
@@ -905,3 +905,4 @@ button:not(.region),
     margin-left: auto;
   }
 }
+
