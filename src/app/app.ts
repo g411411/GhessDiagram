@@ -19,13 +19,48 @@ import { PDF_LIBRARY, LibraryEntry } from './pdf-library';
 
 @Component({ selector: 'app-root', templateUrl: './app.html', styleUrl: './app.css' })
 export class App implements OnDestroy {
+  readonly sections = [
+    { id: 'pdf', label: 'PDF Library', panel: 'pdf-library' },
+    { id: 'videos', label: 'Video Library', panel: 'video-library' },
+    { id: 'local', label: 'Open local file', panel: 'local-panel' },
+    { id: 'help', label: 'Help', panel: 'help-panel' },
+  ] as const;
+  readonly activeTab = signal<'pdf' | 'videos' | 'local' | 'help'>('local');
+  selectTab(tab: 'pdf' | 'videos' | 'local' | 'help') {
+    this.closeDetail();
+    if (tab !== 'pdf') this.cancelLibraryRequest();
+    this.activeTab.set(tab);
+    this.libraryVisible.set(tab === 'pdf');
+    this.videosVisible.set(tab === 'videos');
+  }
+  tabKey(event: KeyboardEvent) {
+    const current = this.sections.findIndex((section) => section.id === this.activeTab());
+    let next: number;
+    switch (event.key) {
+      case 'ArrowRight':
+        next = (current + 1) % this.sections.length;
+        break;
+      case 'ArrowLeft':
+        next = (current + this.sections.length - 1) % this.sections.length;
+        break;
+      case 'Home':
+        next = 0;
+        break;
+      case 'End':
+        next = this.sections.length - 1;
+        break;
+      default:
+        return;
+    }
+    event.preventDefault();
+    this.selectTab(this.sections[next].id);
+    document.getElementById('tab-' + this.sections[next].id)?.focus();
+  }
+
   readonly videos = VIDEO_LIBRARY;
   readonly videosVisible = signal(false);
   toggleVideos() {
-    this.closeDetail();
-    this.videosVisible.update((value) => !value);
-    this.libraryVisible.set(false);
-    this.cancelLibraryRequest();
+    this.selectTab('videos');
   }
   readonly library = PDF_LIBRARY;
   readonly libraryVisible = signal(false);
@@ -41,10 +76,7 @@ export class App implements OnDestroy {
   private libraryRequest?: AbortController;
 
   toggleLibrary() {
-    this.videosVisible.set(false);
-    this.closeDetail();
-    this.libraryVisible.update((value) => !value);
-    if (!this.libraryVisible()) this.cancelLibraryRequest();
+    this.selectTab('pdf');
   }
   cancelLibraryRequest() {
     this.libraryRequest?.abort();
@@ -159,6 +191,7 @@ export class App implements OnDestroy {
     this.busy.set(true);
     this.error.set('');
     this.detectionError.set('');
+    this.selectTab('local');
     this.fileName.set(file.name);
     this.videosVisible.set(false);
     this.documentOrigin.set(origin);
@@ -542,7 +575,8 @@ export class App implements OnDestroy {
     this.resizeTimer = setTimeout(() => this.fitDetail(), 100);
   }
   @HostListener('document:keydown', ['$event']) onKey(event: KeyboardEvent) {
-    if (this.passwordNeeded()) return;
+    if (this.passwordNeeded() || (event.target as HTMLElement)?.getAttribute('role') === 'tab')
+      return;
     const tag = (event.target as HTMLElement)?.tagName;
     if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
     if (event.key === 'Escape') {

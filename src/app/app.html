@@ -13,25 +13,6 @@
       ></a
     >
     <span class="local-label"><span class="local-dot"></span> Ready for your next lesson</span>
-    <button
-      class="library-toggle"
-      (click)="toggleLibrary()"
-      [attr.aria-expanded]="libraryVisible()"
-      aria-controls="pdf-library"
-    >
-      PDF Library
-    </button>
-    <button
-      class="library-toggle"
-      (click)="toggleVideos()"
-      [attr.aria-expanded]="videosVisible()"
-      aria-controls="video-library"
-    >
-      Video Library
-    </button>
-    <label class="button primary upload-button" for="file-input"
-      ><span aria-hidden="true">＋</span> Open local file</label
-    >
     <input
       id="file-input"
       type="file"
@@ -39,13 +20,36 @@
       (change)="choose($event)"
     />
   </header>
+  <nav
+    class="section-tabs"
+    role="tablist"
+    aria-label="Lesson materials and help"
+    [attr.inert]="selected() !== null || passwordNeeded() ? '' : null"
+  >
+    @for (section of sections; track section.id) {
+      <button
+        type="button"
+        role="tab"
+        [id]="'tab-' + section.id"
+        [attr.aria-selected]="activeTab() === section.id"
+        [attr.aria-controls]="section.panel"
+        [attr.tabindex]="activeTab() === section.id ? 0 : -1"
+        (click)="selectTab(section.id)"
+        (keydown)="tabKey($event)"
+      >
+        {{ section.label }}
+      </button>
+    }
+  </nav>
 
   <main [attr.inert]="selected() !== null || passwordNeeded() ? '' : null">
     <section
       id="pdf-library"
       class="library-panel"
-      [hidden]="!libraryVisible()"
-      aria-labelledby="library-title"
+      [hidden]="activeTab() !== 'pdf'"
+      role="tabpanel"
+      tabindex="0"
+      aria-labelledby="tab-pdf"
     >
       <div class="library-heading">
         <div>
@@ -56,7 +60,6 @@
             students.
           </p>
         </div>
-        <button (click)="toggleLibrary()">Close library</button>
       </div>
       <label class="library-search"
         >Search the library<input
@@ -100,8 +103,10 @@
     <section
       id="video-library"
       class="library-panel"
-      [hidden]="!videosVisible()"
-      aria-labelledby="video-library-title"
+      [hidden]="activeTab() !== 'videos'"
+      role="tabpanel"
+      tabindex="0"
+      aria-labelledby="tab-videos"
     >
       <div class="library-heading">
         <div>
@@ -112,7 +117,6 @@
             diagrams.
           </p>
         </div>
-        <button (click)="toggleVideos()">Close video library</button>
       </div>
       <div class="library-grid">
         @for (video of videos; track video.url) {
@@ -135,29 +139,35 @@
       </p>
     </section>
 
-    @if (pageCount() || libraryVisible() || videosVisible()) {
-      <details class="coach-guide">
-        <summary>Coach's quick guide</summary>
-        <ol>
-          <li>
-            <strong>Choose material:</strong> PDF Library opens the website's worksheets. Open local
-            file lets you use a PDF or image from your device.
-          </li>
-          <li>
-            <strong>Present a position:</strong> click a highlighted board to enlarge it. Use Full
-            screen when presenting to the class.
-          </li>
-          <li>
-            <strong>Move through the lesson:</strong> use ← and → for pages in page view, or
-            diagrams in the enlarged view. Press Esc to return to the page.
-          </li>
-          <li>
-            <strong>Play a video:</strong> choose Video Library, then Watch on YouTube. The video
-            opens in another tab; return here to continue your lesson.
-          </li>
-        </ol>
-      </details>
-    }
+    <section
+      id="help-panel"
+      role="tabpanel"
+      tabindex="0"
+      aria-labelledby="tab-help"
+      class="coach-guide"
+      [hidden]="activeTab() !== 'help'"
+    >
+      <h1>Help for coaches</h1>
+      <p>Choose a tab above to prepare and present your lesson.</p>
+      <ol>
+        <li>
+          <strong>Choose material:</strong> PDF Library opens the website's worksheets. Open local
+          file lets you use a PDF or image from your device.
+        </li>
+        <li>
+          <strong>Present a position:</strong> click a highlighted board to enlarge it. Use Full
+          screen when presenting to the class.
+        </li>
+        <li>
+          <strong>Move through the lesson:</strong> use ← and → for pages in page view, or diagrams
+          in the enlarged view. Press Esc to return to the page.
+        </li>
+        <li>
+          <strong>Play a video:</strong> choose Video Library, then Watch on YouTube. The video
+          opens in another tab; return here to continue your lesson.
+        </li>
+      </ol>
+    </section>
 
     @if (error()) {
       <div class="error-banner" role="alert">
@@ -165,178 +175,197 @@
         }}<button class="plain" (click)="error.set('')" aria-label="Dismiss message">×</button>
       </div>
     }
-    @if (!pageCount() && !busy() && !libraryVisible() && !videosVisible()) {
-      <section class="welcome">
-        <span class="eyebrow">A QUICK START FOR COACHES</span>
-        <h1>Your next chess lesson.<br /><span>Ready to teach.</span></h1>
-        <p class="intro">
-          Choose a worksheet, present a position, or play a video lesson.<br />Use PDF Library and
-          Video Library, or open your own PDF or image.
-        </p>
-        <div class="steps">
-          <span
-            ><b>01</b> <strong>Choose your material.</strong> Open a worksheet from PDF Library, or
-            use Open local file.</span
-          ><span
-            ><b>02</b> <strong>Present a position.</strong> Wait for the boards to be found, then
-            click one to enlarge it for your students.</span
-          ><span
-            ><b>03</b> <strong>Teach at your pace.</strong> Use the arrows for the next diagram, or
-            choose a lesson from Video Library.</span
-          >
-        </div>
-        <label class="dropzone" for="file-input">
-          <span class="mini-board" aria-hidden="true"
-            ><span>♜</span><span>♞</span><span>♝</span><span>♛</span><span></span><span>♙</span
-            ><span></span><span>♙</span><span>♙</span><span></span><span>♙</span><span></span
-            ><span>♖</span><span>♘</span><span>♗</span><span>♔</span></span
-          >
-          <strong>Use your own teaching material</strong
-          ><span>Drop a PDF or image here, or click to choose one</span>
-          <small>PDF · PNG · JPEG · WebP <span class="dot-separator">/</span> up to 100 MB</small>
-        </label>
-      </section>
-    }
-    <section class="workspace" [hidden]="!pageCount()">
-      <div class="document-bar">
-        <div class="document-name">
-          <span class="file-icon" aria-hidden="true">▤</span>
-          <div>
-            <h1>{{ fileName() }}</h1>
-            <span>{{ documentOrigin() === 'library' ? 'Website library' : 'Local document' }}</span>
-          </div>
-        </div>
-        <nav class="page-nav" aria-label="Page navigation">
-          <button
-            (click)="changePage(page() - 1)"
-            [disabled]="page() <= 1 || busy()"
-            aria-label="Previous page"
-          >
-            ← Previous page
-          </button>
-          <label
-            >Page
-            <input
-              type="number"
-              min="1"
-              [max]="pageCount()"
-              [value]="page()"
-              (change)="changePage(+$any($event.target).value)"
-              [disabled]="busy()"
-              aria-label="Page number"
-            />
-            of {{ pageCount() }}</label
-          >
-          <button
-            (click)="changePage(page() + 1)"
-            [disabled]="page() >= pageCount() || busy()"
-            aria-label="Next page"
-          >
-            Next page →
-          </button>
-        </nav>
-      </div>
-      <div class="tools">
-        <div class="detection-status" role="status" aria-live="polite">
-          @if (searching()) {
-            <span class="spinner small"></span><span>Finding chessboards…</span>
-          } @else {
-            <span class="status-dot" [class.found]="regions().length > 0"></span
-            ><span>{{ boardLabel() }}</span>
-          }
-        </div>
-        <div class="tool-buttons">
-          <button
-            (click)="pageZoom.set(pageZoom() === 1 ? 1.5 : pageZoom() === 1.5 ? 2 : 1)"
-            [disabled]="busy()"
-            aria-label="Change page zoom"
-          >
-            {{ pageZoom() === 1 ? 'Fit page' : pageZoom() * 100 + '%' }}</button
-          ><button
-            [class.active]="showFrames()"
-            [attr.aria-pressed]="showFrames()"
-            (click)="showFrames.set(!showFrames())"
-          >
-            Highlight boards</button
-          ><button (click)="rotate()" [disabled]="busy()" aria-label="Rotate page 90 degrees">
-            ↻ Rotate
-          </button>
-        </div>
-      </div>
-      @if (detectionError()) {
-        <p class="notice" role="alert">{{ detectionError() }}</p>
-      }
-      @if (!searching() && !busy() && !regions().length && !detectionError()) {
-        <p class="notice">No boards found on this page. Try another page or file.</p>
-      }
-      @if (regions().length && !busy()) {
-        <p class="enlarge-instruction">Click to enlarge diagram</p>
-      }
-      <div class="page-stage" [attr.aria-busy]="busy()">
-        <div
-          class="paper"
-          [style.width.px]="pageWidth() * pageZoom()"
-          [style.max-width]="pageZoom() > 1 ? 'none' : '100%'"
-          [style.aspect-ratio]="ratio()"
-          [class.page-loading]="busy()"
-        >
-          <canvas #pageCanvas [style.filter]="filter()" aria-label="Current document page"></canvas>
-          @for (region of regions(); track $index) {
-            <button
-              class="region"
-              [class.frames-visible]="showFrames()"
-              [style.left.%]="region.x * 100"
-              [style.top.%]="region.y * 100"
-              [style.width.%]="region.width * 100"
-              [style.height.%]="region.height * 100"
-              (click)="openDetail($index, $event.currentTarget)"
-              [attr.aria-label]="'Enlarge diagram ' + ($index + 1)"
+    <section
+      id="local-panel"
+      role="tabpanel"
+      tabindex="0"
+      aria-labelledby="tab-local"
+      [hidden]="activeTab() !== 'local'"
+    >
+      @if (!pageCount() && !busy()) {
+        <section class="welcome">
+          <span class="eyebrow">A QUICK START FOR COACHES</span>
+          <h1>Your next chess lesson.<br /><span>Ready to teach.</span></h1>
+          <p class="intro">
+            Choose a worksheet, present a position, or play a video lesson.<br />Use PDF Library and
+            Video Library, or open your own PDF or image.
+          </p>
+          <div class="steps">
+            <span
+              ><b>01</b> <strong>Choose your material.</strong> Open a worksheet from PDF Library,
+              or use Open local file.</span
+            ><span
+              ><b>02</b> <strong>Present a position.</strong> Wait for the boards to be found, then
+              click one to enlarge it for your students.</span
+            ><span
+              ><b>03</b> <strong>Teach at your pace.</strong> Use the arrows for the next diagram,
+              or choose a lesson from Video Library.</span
             >
-              <span class="region-hint" aria-hidden="true">Click to enlarge diagram</span>
-              <span class="region-number">{{ $index + 1 }} <span aria-hidden="true">↗</span></span>
+          </div>
+          <label class="dropzone" for="file-input">
+            <span class="mini-board" aria-hidden="true"
+              ><span>♜</span><span>♞</span><span>♝</span><span>♛</span><span></span><span>♙</span
+              ><span></span><span>♙</span><span>♙</span><span></span><span>♙</span><span></span
+              ><span>♖</span><span>♘</span><span>♗</span><span>♔</span></span
+            >
+            <strong>Use your own teaching material</strong
+            ><span>Drop a PDF or image here, or click to choose one</span>
+            <small>PDF · PNG · JPEG · WebP <span class="dot-separator">/</span> up to 100 MB</small>
+          </label>
+        </section>
+      }
+      <section class="workspace" [hidden]="!pageCount()">
+        <label class="button primary local-file-action" for="file-input"
+          >Choose another local file</label
+        >
+        <div class="document-bar">
+          <div class="document-name">
+            <span class="file-icon" aria-hidden="true">▤</span>
+            <div>
+              <h1>{{ fileName() }}</h1>
+              <span>{{
+                documentOrigin() === 'library' ? 'Website library' : 'Local document'
+              }}</span>
+            </div>
+          </div>
+          <nav class="page-nav" aria-label="Page navigation">
+            <button
+              (click)="changePage(page() - 1)"
+              [disabled]="page() <= 1 || busy()"
+              aria-label="Previous page"
+            >
+              ← Previous page
             </button>
+            <label
+              >Page
+              <input
+                type="number"
+                min="1"
+                [max]="pageCount()"
+                [value]="page()"
+                (change)="changePage(+$any($event.target).value)"
+                [disabled]="busy()"
+                aria-label="Page number"
+              />
+              of {{ pageCount() }}</label
+            >
+            <button
+              (click)="changePage(page() + 1)"
+              [disabled]="page() >= pageCount() || busy()"
+              aria-label="Next page"
+            >
+              Next page →
+            </button>
+          </nav>
+        </div>
+        <div class="tools">
+          <div class="detection-status" role="status" aria-live="polite">
+            @if (searching()) {
+              <span class="spinner small"></span><span>Finding chessboards…</span>
+            } @else {
+              <span class="status-dot" [class.found]="regions().length > 0"></span
+              ><span>{{ boardLabel() }}</span>
+            }
+          </div>
+          <div class="tool-buttons">
+            <button
+              (click)="pageZoom.set(pageZoom() === 1 ? 1.5 : pageZoom() === 1.5 ? 2 : 1)"
+              [disabled]="busy()"
+              aria-label="Change page zoom"
+            >
+              {{ pageZoom() === 1 ? 'Fit page' : pageZoom() * 100 + '%' }}</button
+            ><button
+              [class.active]="showFrames()"
+              [attr.aria-pressed]="showFrames()"
+              (click)="showFrames.set(!showFrames())"
+            >
+              Highlight boards</button
+            ><button (click)="rotate()" [disabled]="busy()" aria-label="Rotate page 90 degrees">
+              ↻ Rotate
+            </button>
+          </div>
+        </div>
+        @if (detectionError()) {
+          <p class="notice" role="alert">{{ detectionError() }}</p>
+        }
+        @if (!searching() && !busy() && !regions().length && !detectionError()) {
+          <p class="notice">No boards found on this page. Try another page or file.</p>
+        }
+        @if (regions().length && !busy()) {
+          <p class="enlarge-instruction">Click to enlarge diagram</p>
+        }
+        <div class="page-stage" [attr.aria-busy]="busy()">
+          <div
+            class="paper"
+            [style.width.px]="pageWidth() * pageZoom()"
+            [style.max-width]="pageZoom() > 1 ? 'none' : '100%'"
+            [style.aspect-ratio]="ratio()"
+            [class.page-loading]="busy()"
+          >
+            <canvas
+              #pageCanvas
+              [style.filter]="filter()"
+              aria-label="Current document page"
+            ></canvas>
+            @for (region of regions(); track $index) {
+              <button
+                class="region"
+                [class.frames-visible]="showFrames()"
+                [style.left.%]="region.x * 100"
+                [style.top.%]="region.y * 100"
+                [style.width.%]="region.width * 100"
+                [style.height.%]="region.height * 100"
+                (click)="openDetail($index, $event.currentTarget)"
+                [attr.aria-label]="'Enlarge diagram ' + ($index + 1)"
+              >
+                <span class="region-hint" aria-hidden="true">Click to enlarge diagram</span>
+                <span class="region-number"
+                  >{{ $index + 1 }} <span aria-hidden="true">↗</span></span
+                >
+              </button>
+            }
+          </div>
+          @if (busy()) {
+            <div class="stage-loading" role="status">
+              <span class="spinner"></span>Preparing page…
+            </div>
           }
         </div>
-        @if (busy()) {
-          <div class="stage-loading" role="status">
-            <span class="spinner"></span>Preparing page…
-          </div>
-        }
-      </div>
-      <div class="below-page">
-        <span>Click to enlarge diagram</span><span>← → &nbsp; Switch pages</span>
-      </div>
-      <div class="render-controls">
-        <label
-          >Brightness
-          <input
-            type="range"
-            min="0.5"
-            max="1.5"
-            step="0.05"
-            [value]="brightness()"
-            (input)="adjust('brightness', $event)"
-        /></label>
-        <label
-          >Contrast
-          <input
-            type="range"
-            min="0.7"
-            max="1.5"
-            step="0.05"
-            [value]="contrast()"
-            (input)="adjust('contrast', $event)"
-        /></label>
-        <button class="plain" (click)="reset()">Reset</button>
-      </div>
+        <div class="below-page">
+          <span>Click to enlarge diagram</span><span>← → &nbsp; Switch pages</span>
+        </div>
+        <div class="render-controls">
+          <label
+            >Brightness
+            <input
+              type="range"
+              min="0.5"
+              max="1.5"
+              step="0.05"
+              [value]="brightness()"
+              (input)="adjust('brightness', $event)"
+          /></label>
+          <label
+            >Contrast
+            <input
+              type="range"
+              min="0.7"
+              max="1.5"
+              step="0.05"
+              [value]="contrast()"
+              (input)="adjust('contrast', $event)"
+          /></label>
+          <button class="plain" (click)="reset()">Reset</button>
+        </div>
+      </section>
+      @if (busy() && !pageCount() && !passwordNeeded()) {
+        <div class="initial-loading" role="status">
+          <span class="spinner"></span>
+          <h1>Opening document…</h1>
+          <p>{{ fileName() }}</p>
+        </div>
+      }
     </section>
-    @if (busy() && !pageCount() && !passwordNeeded()) {
-      <div class="initial-loading" role="status">
-        <span class="spinner"></span>
-        <h1>Opening document…</h1>
-        <p>{{ fileName() }}</p>
-      </div>
-    }
   </main>
   <footer class="app-footer">
     <span>Chess Diagrams</span

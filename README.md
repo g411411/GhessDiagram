@@ -62,7 +62,7 @@ Upload the contents of dist/ChessDiagrams/browser/ and dist/ChessDiagrams/3rdpar
 
 ## Website PDF library
 
-Use **PDF Library** in the header to browse and search the twelve bundled books and worksheets. **Open PDF** downloads the selected file from the same website and opens the normal diagram viewer. Local file upload remains available. The library requires a network connection to the website; it does not require access to files on the user's computer.
+Use the **PDF Library** tab to browse and search the twelve bundled books and worksheets. **Open PDF** downloads the selected file from the same website and opens the normal diagram viewer. Local file upload remains available. The library requires a network connection to the website; it does not require access to files on the user's computer.
 
 The original PDFs are stored in `public/library/` and are copied by Angular into `dist/ChessDiagrams/browser/library/`. The catalog is `src/app/pdf-library.ts`. To add a document, copy it into `public/library/` and add its filename, title and size to the catalog. Include the entire `library/` directory when deploying. These files are served to visitors as normal website assets.
 
@@ -74,4 +74,8 @@ Video Library lists five curated YouTube lessons. Watch on YouTube opens the sel
 
 ## Coach instructions
 
-The welcome screen gives coaches three quick steps for choosing materials, presenting a position and moving through a lesson. Coach's quick guide is available alongside both libraries and any open document, covering local files, full screen, arrow keys, Escape and YouTube tabs.
+The welcome screen gives coaches three quick steps for choosing materials, presenting a position and moving through a lesson. The Help tab covers local files, full screen, arrow keys, Escape and YouTube tabs.
+
+## Navigation tabs
+
+PDF Library, Video Library, Open local file and Help are separate panels. Selecting Open local file shows the file chooser or the current document. Selecting a library PDF opens it in the viewer panel. Switching tabs preserves the open PDF and page. The tab bar supports Left/Right, Home/End and standard Tab navigation.
