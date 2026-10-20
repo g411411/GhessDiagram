@@ -69,3 +69,41 @@ app-root .steps {
   text-align: left;
   margin-bottom: 28px;
 }
+app-root .enlarge-instruction {
+  margin: 16px 0;
+  padding: 16px 20px;
+  background: #173e36;
+  color: #fff;
+  border-left: 6px solid #c7dea0;
+  border-radius: 8px;
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  line-height: 1.4;
+}
+app-root .region-hint {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translate(-50%, -8px);
+  width: max-content;
+  max-width: 85vw;
+  padding: 9px 12px;
+  background: #173e36;
+  color: #fff;
+  border-radius: 6px;
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: 0 3px 10px #0003;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+app-root .region:hover .region-hint,
+app-root .region:focus-visible .region-hint {
+  opacity: 1;
+}
+app-root .region:hover,
+app-root .region:focus-visible {
+  z-index: 3;
+}

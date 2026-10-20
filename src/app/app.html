@@ -269,6 +269,9 @@
       @if (!searching() && !busy() && !regions().length && !detectionError()) {
         <p class="notice">No boards found on this page. Try another page or file.</p>
       }
+      @if (regions().length && !busy()) {
+        <p class="enlarge-instruction">Click to enlarge diagram</p>
+      }
       <div class="page-stage" [attr.aria-busy]="busy()">
         <div
           class="paper"
@@ -289,6 +292,7 @@
               (click)="openDetail($index, $event.currentTarget)"
               [attr.aria-label]="'Enlarge diagram ' + ($index + 1)"
             >
+              <span class="region-hint" aria-hidden="true">Click to enlarge diagram</span>
               <span class="region-number">{{ $index + 1 }} <span aria-hidden="true">↗</span></span>
             </button>
           }
@@ -300,8 +304,7 @@
         }
       </div>
       <div class="below-page">
-        <span>For your class: click a highlighted board to present the position</span
-        ><span>← → &nbsp; Switch pages</span>
+        <span>Click to enlarge diagram</span><span>← → &nbsp; Switch pages</span>
       </div>
       <div class="render-controls">
         <label
