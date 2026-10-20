@@ -6,7 +6,7 @@ describe('Chess Diagrams', () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     expect(fixture.nativeElement.querySelector('.welcome h1').textContent).toContain(
-      'Every diagram',
+      'Your next chess lesson',
     );
     expect(fixture.nativeElement.querySelector('#diagram-dialog').hidden).toBe(true);
     expect(fixture.componentInstance.pageCount()).toBe(0);

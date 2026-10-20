@@ -8,9 +8,11 @@
   <header class="app-header">
     <a class="brand" href="./" aria-label="Chess Diagrams — home"
       ><span class="brand-icon" aria-hidden="true">♞</span
-      ><span>Chess<span class="brand-light">Diagrams</span><small>CHESS IN FOCUS</small></span></a
+      ><span
+        >Chess<span class="brand-light">Diagrams</span><small>TOOLS FOR CHESS COACHES</small></span
+      ></a
     >
-    <span class="local-label"><span class="local-dot"></span> PDFs processed in your browser</span>
+    <span class="local-label"><span class="local-dot"></span> Ready for your next lesson</span>
     <button
       class="library-toggle"
       (click)="toggleLibrary()"
@@ -28,7 +30,7 @@
       Video Library
     </button>
     <label class="button primary upload-button" for="file-input"
-      ><span aria-hidden="true">＋</span> Open file</label
+      ><span aria-hidden="true">＋</span> Open local file</label
     >
     <input
       id="file-input"
@@ -47,9 +49,12 @@
     >
       <div class="library-heading">
         <div>
-          <span class="eyebrow">READY TO EXPLORE</span>
+          <span class="eyebrow">CHOOSE MATERIAL FOR YOUR CLASS</span>
           <h1 id="library-title">PDF Library</h1>
-          <p>Choose a book or worksheet. No file from your computer needed.</p>
+          <p>
+            Choose a worksheet and click Open PDF. Then click a detected board to present it to your
+            students.
+          </p>
         </div>
         <button (click)="toggleLibrary()">Close library</button>
       </div>
@@ -100,9 +105,12 @@
     >
       <div class="library-heading">
         <div>
-          <span class="eyebrow">WATCH AND LEARN</span>
+          <span class="eyebrow">BRING A VIDEO INTO YOUR LESSON</span>
           <h1 id="video-library-title">Video Library</h1>
-          <p>Choose a chess lesson. Videos open on YouTube in a new tab.</p>
+          <p>
+            Choose a lesson and click Watch on YouTube. Return to this tab to continue working with
+            diagrams.
+          </p>
         </div>
         <button (click)="toggleVideos()">Close video library</button>
       </div>
@@ -127,6 +135,30 @@
       </p>
     </section>
 
+    @if (pageCount() || libraryVisible() || videosVisible()) {
+      <details class="coach-guide">
+        <summary>Coach's quick guide</summary>
+        <ol>
+          <li>
+            <strong>Choose material:</strong> PDF Library opens the website's worksheets. Open local
+            file lets you use a PDF or image from your device.
+          </li>
+          <li>
+            <strong>Present a position:</strong> click a highlighted board to enlarge it. Use Full
+            screen when presenting to the class.
+          </li>
+          <li>
+            <strong>Move through the lesson:</strong> use ← and → for pages in page view, or
+            diagrams in the enlarged view. Press Esc to return to the page.
+          </li>
+          <li>
+            <strong>Play a video:</strong> choose Video Library, then Watch on YouTube. The video
+            opens in another tab; return here to continue your lesson.
+          </li>
+        </ol>
+      </details>
+    }
+
     @if (error()) {
       <div class="error-banner" role="alert">
         {{ error()
@@ -135,24 +167,34 @@
     }
     @if (!pageCount() && !busy() && !libraryVisible() && !videosVisible()) {
       <section class="welcome">
-        <span class="eyebrow">FROM PAGE TO POSITION</span>
-        <h1>Every diagram.<br /><span>Every detail.</span></h1>
+        <span class="eyebrow">A QUICK START FOR COACHES</span>
+        <h1>Your next chess lesson.<br /><span>Ready to teach.</span></h1>
         <p class="intro">
-          Open a page from a chess book.<br />Click a diagram and focus on the position.
+          Choose a worksheet, present a position, or play a video lesson.<br />Use PDF Library and
+          Video Library, or open your own PDF or image.
         </p>
+        <div class="steps">
+          <span
+            ><b>01</b> <strong>Choose your material.</strong> Open a worksheet from PDF Library, or
+            use Open local file.</span
+          ><span
+            ><b>02</b> <strong>Present a position.</strong> Wait for the boards to be found, then
+            click one to enlarge it for your students.</span
+          ><span
+            ><b>03</b> <strong>Teach at your pace.</strong> Use the arrows for the next diagram, or
+            choose a lesson from Video Library.</span
+          >
+        </div>
         <label class="dropzone" for="file-input">
           <span class="mini-board" aria-hidden="true"
             ><span>♜</span><span>♞</span><span>♝</span><span>♛</span><span></span><span>♙</span
             ><span></span><span>♙</span><span>♙</span><span></span><span>♙</span><span></span
             ><span>♖</span><span>♘</span><span>♗</span><span>♔</span></span
           >
-          <strong>Drop your page here</strong><span>or click to choose a file</span>
+          <strong>Use your own teaching material</strong
+          ><span>Drop a PDF or image here, or click to choose one</span>
           <small>PDF · PNG · JPEG · WebP <span class="dot-separator">/</span> up to 100 MB</small>
         </label>
-        <div class="steps">
-          <span><b>01</b> Open a file</span><span><b>02</b> Let us find the boards</span
-          ><span><b>03</b> Click a diagram</span>
-        </div>
       </section>
     }
     <section class="workspace" [hidden]="!pageCount()">
@@ -170,7 +212,7 @@
             [disabled]="page() <= 1 || busy()"
             aria-label="Previous page"
           >
-            ← Previous
+            ← Previous page
           </button>
           <label
             >Page
@@ -190,7 +232,7 @@
             [disabled]="page() >= pageCount() || busy()"
             aria-label="Next page"
           >
-            Next →
+            Next page →
           </button>
         </nav>
       </div>
@@ -215,7 +257,7 @@
             [attr.aria-pressed]="showFrames()"
             (click)="showFrames.set(!showFrames())"
           >
-            Board outlines</button
+            Highlight boards</button
           ><button (click)="rotate()" [disabled]="busy()" aria-label="Rotate page 90 degrees">
             ↻ Rotate
           </button>
@@ -258,7 +300,8 @@
         }
       </div>
       <div class="below-page">
-        <span>Click a diagram to enlarge it</span><span>← → &nbsp; Switch pages</span>
+        <span>For your class: click a highlighted board to present the position</span
+        ><span>← → &nbsp; Switch pages</span>
       </div>
       <div class="render-controls">
         <label
@@ -293,7 +336,8 @@
     }
   </main>
   <footer class="app-footer">
-    <span>Chess Diagrams</span><span>Fewer distractions. More chess.</span>
+    <span>Chess Diagrams</span
+    ><span>Worksheets, positions and video lessons for chess coaches.</span>
   </footer>
   @if (dragging()) {
     <div class="drop-overlay">Drop the file to open it</div>
@@ -350,13 +394,13 @@
   </div>
   <div class="detail-footer">
     <button (click)="nextDetail(-1)" [disabled]="selected() === 0 || detailBusy()">
-      ← Previous</button
-    ><span>Page {{ page() }} <span class="detail-hint">· Esc — back to page</span></span
+      ← Previous diagram</button
+    ><span>Page {{ page() }} <span class="detail-hint">· ← → diagrams · Esc to return</span></span
     ><button
       (click)="nextDetail(1)"
       [disabled]="selected() === regions().length - 1 || detailBusy()"
     >
-      Next →
+      Next diagram →
     </button>
   </div>
 </div>

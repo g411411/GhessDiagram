@@ -30,3 +30,42 @@ label[for='file-input'] {
   background: white;
   padding: 12px;
 }
+app-root .coach-guide {
+  max-width: 1144px;
+  margin: 20px auto;
+  padding: 16px 20px;
+  border: 1px solid #d5e0d0;
+  border-radius: 10px;
+  background: #fffefa;
+  font-size: 16px;
+  line-height: 1.65;
+}
+app-root .coach-guide summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #30494a;
+  min-height: 36px;
+}
+app-root .coach-guide ol {
+  padding-left: 24px;
+  margin-bottom: 0;
+}
+app-root .coach-guide li {
+  margin: 8px 0;
+}
+app-root .steps > span {
+  flex: 1;
+}
+@media (max-width: 700px) {
+  app-root .coach-guide {
+    margin: 16px 12px;
+  }
+  app-root .brand small {
+    letter-spacing: 1px;
+  }
+}
+app-root .steps {
+  line-height: 1.6;
+  text-align: left;
+  margin-bottom: 28px;
+}

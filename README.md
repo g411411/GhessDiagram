@@ -71,3 +71,7 @@ Library fetching supports filenames with spaces, root and subfolder hosting, can
 ## Video lessons
 
 Video Library lists five curated YouTube lessons. Watch on YouTube opens the selected lesson in a new tab, preserving the current PDF. Videos remain hosted on YouTube and require internet access; no embedded player or video downloads are used. The catalog is src/app/video-library.ts.
+
+## Coach instructions
+
+The welcome screen gives coaches three quick steps for choosing materials, presenting a position and moving through a lesson. Coach's quick guide is available alongside both libraries and any open document, covering local files, full screen, arrow keys, Escape and YouTube tabs.
