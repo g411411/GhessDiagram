@@ -14,6 +14,7 @@ import type {
   RenderTask,
 } from 'pdfjs-dist';
 import { Region } from './detector';
+import { downloadLibraryPdf } from './download-library';
 import { VIDEO_LIBRARY } from './video-library';
 import { PDF_LIBRARY, LibraryEntry } from './pdf-library';
 
@@ -91,9 +92,7 @@ export class App implements OnDestroy {
     this.libraryError.set('');
     try {
       const url = new URL(`library/${encodeURIComponent(entry.file)}`, document.baseURI);
-      const response = await fetch(url, { signal: request.signal });
-      if (!response.ok) throw new Error('PDF unavailable');
-      const blob = await response.blob();
+      const blob = await downloadLibraryPdf(url, entry.sizeMB > 25, request.signal);
       const signature = await blob.slice(0, 1024).text();
       if (!signature.includes('%PDF-')) throw new Error('Invalid PDF response');
       if (this.libraryRequest !== request || request.signal.aborted) return;

@@ -79,3 +79,8 @@ The welcome screen gives coaches three quick steps for choosing materials, prese
 ## Navigation tabs
 
 PDF Library, Video Library, Open local file and Help are separate panels. Selecting Open local file shows the file chooser or the current document. Selecting a library PDF opens it in the viewer panel. Switching tabs preserves the open PDF and page. The tab bar supports Left/Right, Home/End and standard Tab navigation.
+
+## Cloudflare Pages
+
+Use npm run build:cloudflare and deploy dist/ChessDiagrams/browser. This build splits PDFs larger than 25 MiB into verified smaller assets and reassembles them in the browser; the original source PDFs remain unchanged. Exact GitHub integration settings are in [Cloudflare deployment](docs/CLOUDFLARE.md).
+
