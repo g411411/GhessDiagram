@@ -14,9 +14,63 @@ import type {
   RenderTask,
 } from 'pdfjs-dist';
 import { Region } from './detector';
+import { PDF_LIBRARY, LibraryEntry } from './pdf-library';
 
 @Component({ selector: 'app-root', templateUrl: './app.html', styleUrl: './app.css' })
 export class App implements OnDestroy {
+  readonly library = PDF_LIBRARY;
+  readonly libraryVisible = signal(false);
+  readonly libraryQuery = signal('');
+  readonly libraryLoading = signal<string | null>(null);
+  readonly libraryError = signal('');
+  readonly documentOrigin = signal<'local' | 'library'>('local');
+  readonly filteredLibrary = computed(() =>
+    this.library.filter((entry) =>
+      entry.title.toLowerCase().includes(this.libraryQuery().trim().toLowerCase()),
+    ),
+  );
+  private libraryRequest?: AbortController;
+
+  toggleLibrary() {
+    this.closeDetail();
+    this.libraryVisible.update((value) => !value);
+    if (!this.libraryVisible()) this.cancelLibraryRequest();
+  }
+  cancelLibraryRequest() {
+    this.libraryRequest?.abort();
+    this.libraryRequest = undefined;
+    this.libraryLoading.set(null);
+  }
+  async openLibrary(entry: LibraryEntry) {
+    this.cancelLibraryRequest();
+    const request = new AbortController();
+    this.libraryRequest = request;
+    this.libraryLoading.set(entry.file);
+    this.libraryError.set('');
+    try {
+      const url = new URL(`library/${encodeURIComponent(entry.file)}`, document.baseURI);
+      const response = await fetch(url, { signal: request.signal });
+      if (!response.ok) throw new Error('PDF unavailable');
+      const blob = await response.blob();
+      const signature = await blob.slice(0, 1024).text();
+      if (!signature.includes('%PDF-')) throw new Error('Invalid PDF response');
+      if (this.libraryRequest !== request || request.signal.aborted) return;
+      this.libraryRequest = undefined;
+      this.libraryLoading.set(null);
+      this.libraryVisible.set(false);
+      await this.open(new File([blob], entry.file, { type: 'application/pdf' }), 'library');
+    } catch {
+      if (this.libraryRequest !== request || request.signal.aborted) return;
+      this.libraryError.set(
+        'Could not load this library PDF. Check your connection and try again.',
+      );
+    } finally {
+      if (this.libraryRequest === request) {
+        this.libraryRequest = undefined;
+        this.libraryLoading.set(null);
+      }
+    }
+  }
   @ViewChild('pageCanvas', { static: true }) private pageCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('detailCanvas', { static: true }) private detailCanvas!: ElementRef<HTMLCanvasElement>;
   @ViewChild('detailViewport', { static: true })
@@ -80,7 +134,8 @@ export class App implements OnDestroy {
     this.dragging.set(false);
     if (event.dataTransfer?.files[0]) await this.open(event.dataTransfer.files[0]);
   }
-  async open(file: File) {
+  async open(file: File, origin: 'local' | 'library' = 'local') {
+    this.cancelLibraryRequest();
     if (!/\.(pdf|png|jpe?g|webp)$/i.test(file.name)) {
       this.error.set('Choose a PDF, PNG, JPEG or WebP file.');
       return;
@@ -95,6 +150,8 @@ export class App implements OnDestroy {
     this.error.set('');
     this.detectionError.set('');
     this.fileName.set(file.name);
+    this.documentOrigin.set(origin);
+    this.libraryVisible.set(false);
     this.pageCount.set(0);
     this.regions.set([]);
     this.rotation = 0;
@@ -527,6 +584,7 @@ export class App implements OnDestroy {
     this.passwordCallback = undefined;
   }
   ngOnDestroy() {
+    this.cancelLibraryRequest();
     this.revision++;
     this.disposeDocument();
     clearTimeout(this.resizeTimer);

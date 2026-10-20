@@ -10,7 +10,15 @@
       ><span class="brand-icon" aria-hidden="true">♞</span
       ><span>Chess<span class="brand-light">Diagrams</span><small>CHESS IN FOCUS</small></span></a
     >
-    <span class="local-label"><span class="local-dot"></span> Files stay on your device</span>
+    <span class="local-label"><span class="local-dot"></span> PDFs processed in your browser</span>
+    <button
+      class="library-toggle"
+      (click)="toggleLibrary()"
+      [attr.aria-expanded]="libraryVisible()"
+      aria-controls="pdf-library"
+    >
+      PDF Library
+    </button>
     <label class="button primary upload-button" for="file-input"
       ><span aria-hidden="true">＋</span> Open file</label
     >
@@ -23,13 +31,66 @@
   </header>
 
   <main [attr.inert]="selected() !== null || passwordNeeded() ? '' : null">
+    <section
+      id="pdf-library"
+      class="library-panel"
+      [hidden]="!libraryVisible()"
+      aria-labelledby="library-title"
+    >
+      <div class="library-heading">
+        <div>
+          <span class="eyebrow">READY TO EXPLORE</span>
+          <h1 id="library-title">PDF Library</h1>
+          <p>Choose a book or worksheet. No file from your computer needed.</p>
+        </div>
+        <button (click)="toggleLibrary()">Close library</button>
+      </div>
+      <label class="library-search"
+        >Search the library<input
+          type="search"
+          placeholder="Search books and worksheets"
+          [value]="libraryQuery()"
+          (input)="libraryQuery.set($any($event.target).value)"
+      /></label>
+      @if (libraryError()) {
+        <p class="notice" role="alert">{{ libraryError() }}</p>
+      }
+      @if (libraryLoading()) {
+        <p class="library-progress" role="status">
+          <span class="spinner small"></span> Loading {{ libraryLoading() }}…
+          <button (click)="cancelLibraryRequest()">Cancel</button>
+        </p>
+      }
+      <div class="library-grid">
+        @for (entry of filteredLibrary(); track entry.file) {
+          <article class="library-card">
+            <span class="library-filetype">PDF · {{ entry.sizeMB }} MB</span>
+            <h2>{{ entry.title }}</h2>
+            <button
+              class="primary"
+              (click)="openLibrary(entry)"
+              [attr.aria-label]="'Open ' + entry.title"
+              [disabled]="libraryLoading() === entry.file"
+            >
+              {{ libraryLoading() === entry.file ? 'Loading…' : 'Open PDF' }}
+            </button>
+          </article>
+        } @empty {
+          <p>No matching PDFs. Try another search.</p>
+        }
+      </div>
+      <p class="library-note">
+        Library PDFs are downloaded from this website when selected. An internet connection is
+        required.
+      </p>
+    </section>
     @if (error()) {
       <div class="error-banner" role="alert">
         {{ error()
         }}<button class="plain" (click)="error.set('')" aria-label="Dismiss message">×</button>
       </div>
     }
-    @if (!pageCount() && !busy()) {
+    @if (!pageCount() && !busy() && !libraryVisible()) {
       <section class="welcome">
         <span class="eyebrow">FROM PAGE TO POSITION</span>
         <h1>Every diagram.<br /><span>Every detail.</span></h1>
@@ -57,7 +118,7 @@
           <span class="file-icon" aria-hidden="true">▤</span>
           <div>
             <h1>{{ fileName() }}</h1>
-            <span>Local document</span>
+            <span>{{ documentOrigin() === 'library' ? 'Website library' : 'Local document' }}</span>
           </div>
         </div>
         <nav class="page-nav" aria-label="Page navigation">

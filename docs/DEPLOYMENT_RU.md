@@ -7,7 +7,7 @@
 ChessDiagrams-deployment.zip — production-сборка для статического хостинга.
 ChessDiagrams-deployment/ — те же файлы без архива.
 
-В корне архива находятся index.html, JS/CSS bundles, favicon.ico, 3rdpartylicenses.txt и папка pdfjs со всеми вложенными файлами. Загружайте всё содержимое, сохраняя структуру каталогов. Файлы из src, node_modules, конфигурация Angular, исходные PDF и Python-программа на сервере не нужны.
+В корне архива находятся index.html, JS/CSS bundles, favicon.ico, 3rdpartylicenses.txt и папки pdfjs и library со всеми вложенными файлами. Загружайте всё содержимое, сохраняя структуру каталогов. Файлы из src, node_modules, конфигурация Angular, Python-программа на сервере не нужны.
 
 ## Как развернуть
 
@@ -48,3 +48,9 @@ Backend, Node.js и Angular CLI на production-сервере не требую
 Дополнительно переносите dist\ChessDiagrams\3rdpartylicenses.txt.
 
 Пути относительные: сборка подходит для корня сайта и подпапки. Этот пакет подготовлен локально; публикация на внешний сервер не выполнялась.
+
+## Библиотека PDF на сайте
+
+Новая версия включает 12 PDF в public/library. Production-сборка копирует их в browser/library. При размещении обязательно загрузите папку library со всеми PDF рядом с index.html и pdfjs. Кнопка PDF Library показывает каталог; Open PDF открывает выбранный файл через тот же просмотрщик. Для этого нужен доступ к сайту, но не к файлам компьютера. Сервер должен отдавать .pdf как application/pdf, не заменяя отсутствующие файлы на HTML.
+
+Новый архив с библиотекой называется ChessDiagrams-with-library.zip. Старый архив ChessDiagrams-deployment.zip библиотеку не содержит.
