@@ -6,13 +6,16 @@
   (dragleave)="dragging.set(false)"
 >
   <header class="app-header">
-    <a class="brand" href="./" aria-label="Chess Diagrams — home"
+    <a class="brand" href="./" [attr.aria-label]="t('Chess Diagrams — home')"
       ><span class="brand-icon" aria-hidden="true">♞</span
       ><span
-        >Chess<span class="brand-light">Diagrams</span><small>TOOLS FOR CHESS COACHES</small></span
+        >Chess<span class="brand-light">Diagrams</span
+        ><small>{{ t('TOOLS FOR CHESS COACHES') }}</small></span
       ></a
     >
-    <span class="local-label"><span class="local-dot"></span> Ready for your next lesson</span>
+    <span class="local-label"
+      ><span class="local-dot"></span> {{ t('Ready for your next lesson') }}</span
+    >
     <input
       id="file-input"
       type="file"
@@ -23,7 +26,7 @@
   <nav
     class="section-tabs"
     role="tablist"
-    aria-label="Lesson materials and help"
+    [attr.aria-label]="t('Lesson materials and help')"
     [attr.inert]="selected() !== null || passwordNeeded() ? '' : null"
   >
     @for (section of sections; track section.id) {
@@ -37,7 +40,7 @@
         (click)="selectTab(section.id)"
         (keydown)="tabKey($event)"
       >
-        {{ section.label }}
+        {{ section.id === 'settings' ? 'Settings' : t(section.label) }}
       </button>
     }
   </nav>
@@ -53,42 +56,46 @@
     >
       <div class="library-heading">
         <div>
-          <span class="eyebrow">CHOOSE MATERIAL FOR YOUR CLASS</span>
-          <h1 id="library-title">PDF Library</h1>
+          <span class="eyebrow">{{ t('CHOOSE MATERIAL FOR YOUR CLASS') }}</span>
+          <h1 id="library-title">{{ t('PDF Library') }}</h1>
           <p>
-            Choose a worksheet and click Open PDF. Then click a detected board to present it to your
-            students.
+            {{
+              t(
+                'Choose a worksheet and click Open PDF. Then click a detected board to present it to your students.'
+              )
+            }}
           </p>
         </div>
       </div>
       <label class="library-search"
-        >Search the library<input
+        >{{ t('Search the library')
+        }}<input
           type="search"
-          placeholder="Search books and worksheets"
+          [attr.placeholder]="t('Search books and worksheets')"
           [value]="libraryQuery()"
           (input)="libraryQuery.set($any($event.target).value)"
       /></label>
       @if (libraryError()) {
-        <p class="notice" role="alert">{{ libraryError() }}</p>
+        <p class="notice" role="alert">{{ t(libraryError()) }}</p>
       }
       @if (libraryLoading()) {
         <p class="library-progress" role="status">
-          <span class="spinner small"></span> Loading {{ libraryLoading() }}…
-          <button (click)="cancelLibraryRequest()">Cancel</button>
+          <span class="spinner small"></span> {{ t('Loading') }} {{ libraryLoading() }}…
+          <button (click)="cancelLibraryRequest()">{{ t('Cancel') }}</button>
         </p>
       }
       <div class="library-grid">
         @for (entry of filteredLibrary(); track entry.file) {
           <article class="library-card">
-            <span class="library-filetype">PDF · {{ entry.sizeMB }} MB</span>
-            <h2>{{ entry.title }}</h2>
+            <span class="library-filetype">PDF · {{ entry.sizeMB }} {{ t('MB') }}</span>
+            <h2>{{ t(entry.title) }}</h2>
             <button
               class="primary"
               (click)="openLibrary(entry)"
-              [attr.aria-label]="'Open ' + entry.title"
+              [attr.aria-label]="t('Open') + ' ' + t(entry.title)"
               [disabled]="libraryLoading() === entry.file"
             >
-              {{ libraryLoading() === entry.file ? 'Loading…' : 'Open PDF' }}
+              {{ t(libraryLoading() === entry.file ? 'Loading…' : 'Open PDF') }}
             </button>
           </article>
         } @empty {
@@ -96,8 +103,11 @@
         }
       </div>
       <p class="library-note">
-        Library PDFs are downloaded from this website when selected. An internet connection is
-        required.
+        {{
+          t(
+            'Library PDFs are downloaded from this website when selected. An internet connection is required.'
+          )
+        }}
       </p>
     </section>
     <section
@@ -110,33 +120,67 @@
     >
       <div class="library-heading">
         <div>
-          <span class="eyebrow">BRING A VIDEO INTO YOUR LESSON</span>
-          <h1 id="video-library-title">Video Library</h1>
+          <span class="eyebrow">{{ t('BRING A VIDEO INTO YOUR LESSON') }}</span>
+          <h1 id="video-library-title">{{ t('Video Library') }}</h1>
           <p>
-            Choose a lesson and click Watch on YouTube. Return to this tab to continue working with
-            diagrams.
+            {{
+              t(
+                'Choose a lesson and click Watch on YouTube. Return to this tab to continue working with diagrams.'
+              )
+            }}
           </p>
         </div>
       </div>
       <div class="library-grid">
         @for (video of videos; track video.url) {
           <article class="library-card">
-            <span>YouTube lesson</span>
-            <h2>{{ video.title }}</h2>
+            <span>{{ t('YouTube lesson') }}</span>
+            <h2>{{ t(video.title) }}</h2>
             <a
               class="button primary"
               [href]="video.url"
               target="_blank"
               rel="noopener noreferrer"
-              [attr.aria-label]="'Watch ' + video.title + ' on YouTube (opens in a new tab)'"
-              >Watch on YouTube ↗</a
+              [attr.aria-label]="
+                t('Watch') + ' ' + t(video.title) + ' ' + t('on YouTube (opens in a new tab)')
+              "
+              >{{ t('Watch on YouTube ↗') }}</a
             >
           </article>
         }
       </div>
       <p class="library-note">
-        YouTube is an external website. An internet connection is required.
+        {{ t('YouTube is an external website. An internet connection is required.') }}
       </p>
+    </section>
+
+    <section
+      id="settings-panel"
+      lang="en"
+      role="tabpanel"
+      tabindex="0"
+      aria-labelledby="tab-settings"
+      class="settings-panel"
+      [hidden]="activeTab() !== 'settings'"
+    >
+      <h1>Settings</h1>
+      <p>Choose a language, then select Save. Settings always stays in English.</p>
+      <form (submit)="$event.preventDefault(); saveLanguage()">
+        <label for="interface-language">Interface language</label>
+        <select
+          id="interface-language"
+          [value]="draftLanguage()"
+          (change)="chooseLanguage($any($event.target).value)"
+        >
+          <option value="en" lang="en">English</option>
+          <option value="ru" lang="ru">Русский</option>
+          <option value="es" lang="es">Español</option>
+        </select>
+        <button type="submit" class="primary">Save</button>
+      </form>
+      @if (saveNotice()) {
+        <p class="settings-notice" role="status" aria-live="polite">{{ saveNotice() }}</p>
+      }
     </section>
 
     <section
@@ -147,32 +191,50 @@
       class="coach-guide"
       [hidden]="activeTab() !== 'help'"
     >
-      <h1>Help for coaches</h1>
-      <p>Choose a tab above to prepare and present your lesson.</p>
+      <h1>{{ t('Help for coaches') }}</h1>
+      <p>{{ t('Choose a tab above to prepare and present your lesson.') }}</p>
       <ol>
         <li>
-          <strong>Choose material:</strong> PDF Library opens the website's worksheets. Open local
-          file lets you use a PDF or image from your device.
+          <strong>{{ t('Choose material:') }}</strong>
+          {{
+            t(
+              "PDF Library opens the website's worksheets. Open local file lets you use a PDF or image from your device."
+            )
+          }}
         </li>
         <li>
-          <strong>Present a position:</strong> click a highlighted board to enlarge it. Use Full
-          screen when presenting to the class.
+          <strong>{{ t('Present a position:') }}</strong>
+          {{
+            t(
+              'click a highlighted board to enlarge it. Use Full screen when presenting to the class.'
+            )
+          }}
         </li>
         <li>
-          <strong>Move through the lesson:</strong> use ← and → for pages in page view, or diagrams
-          in the enlarged view. Press Esc to return to the page.
+          <strong>{{ t('Move through the lesson:') }}</strong>
+          {{
+            t(
+              'use ← and → for pages in page view, or diagrams in the enlarged view. Press Esc to return to the page.'
+            )
+          }}
         </li>
         <li>
-          <strong>Play a video:</strong> choose Video Library, then Watch on YouTube. The video
-          opens in another tab; return here to continue your lesson.
+          <strong>{{ t('Play a video:') }}</strong>
+          {{
+            t(
+              'choose Video Library, then Watch on YouTube. The video opens in another tab; return here to continue your lesson.'
+            )
+          }}
         </li>
       </ol>
     </section>
 
     @if (error()) {
       <div class="error-banner" role="alert">
-        {{ error()
-        }}<button class="plain" (click)="error.set('')" aria-label="Dismiss message">×</button>
+        {{ t(error())
+        }}<button class="plain" (click)="error.set('')" [attr.aria-label]="t('Dismiss message')">
+          ×
+        </button>
       </div>
     }
     <section
@@ -184,22 +246,31 @@
     >
       @if (!pageCount() && !busy()) {
         <section class="welcome">
-          <span class="eyebrow">A QUICK START FOR COACHES</span>
-          <h1>Your next chess lesson.<br /><span>Ready to teach.</span></h1>
+          <span class="eyebrow">{{ t('A QUICK START FOR COACHES') }}</span>
+          <h1>
+            {{ t('Your next chess lesson.') }}<br /><span>{{ t('Ready to teach.') }}</span>
+          </h1>
           <p class="intro">
-            Choose a worksheet, present a position, or play a video lesson.<br />Use PDF Library and
-            Video Library, or open your own PDF or image.
+            {{ t('Choose a worksheet, present a position, or play a video lesson.') }}<br />{{
+              t('Use PDF Library and Video Library, or open your own PDF or image.')
+            }}
           </p>
           <div class="steps">
             <span
-              ><b>01</b> <strong>Choose your material.</strong> Open a worksheet from PDF Library,
-              or use Open local file.</span
+              ><b>01</b> <strong>{{ t('Choose your material.') }}</strong>
+              {{ t('Open a worksheet from PDF Library, or use Open local file.') }}</span
             ><span
-              ><b>02</b> <strong>Present a position.</strong> Wait for the boards to be found, then
-              click one to enlarge it for your students.</span
+              ><b>02</b> <strong>{{ t('Present a position.') }}</strong>
+              {{
+                t(
+                  'Wait for the boards to be found, then click one to enlarge it for your students.'
+                )
+              }}</span
             ><span
-              ><b>03</b> <strong>Teach at your pace.</strong> Use the arrows for the next diagram,
-              or choose a lesson from Video Library.</span
+              ><b>03</b> <strong>{{ t('Teach at your pace.') }}</strong>
+              {{
+                t('Use the arrows for the next diagram, or choose a lesson from Video Library.')
+              }}</span
             >
           </div>
           <label class="dropzone" for="file-input">
@@ -208,36 +279,39 @@
               ><span></span><span>♙</span><span>♙</span><span></span><span>♙</span><span></span
               ><span>♖</span><span>♘</span><span>♗</span><span>♔</span></span
             >
-            <strong>Use your own teaching material</strong
-            ><span>Drop a PDF or image here, or click to choose one</span>
-            <small>PDF · PNG · JPEG · WebP <span class="dot-separator">/</span> up to 100 MB</small>
+            <strong>{{ t('Use your own teaching material') }}</strong
+            ><span>{{ t('Drop a PDF or image here, or click to choose one') }}</span>
+            <small
+              >PDF · PNG · JPEG · WebP <span class="dot-separator">/</span>
+              {{ t('up to 100 MB') }}</small
+            >
           </label>
         </section>
       }
       <section class="workspace" [hidden]="!pageCount()">
-        <label class="button primary local-file-action" for="file-input"
-          >Choose another local file</label
-        >
+        <label class="button primary local-file-action" for="file-input">{{
+          t('Choose another local file')
+        }}</label>
         <div class="document-bar">
           <div class="document-name">
             <span class="file-icon" aria-hidden="true">▤</span>
             <div>
               <h1>{{ fileName() }}</h1>
               <span>{{
-                documentOrigin() === 'library' ? 'Website library' : 'Local document'
+                t(documentOrigin() === 'library' ? 'Website library' : 'Local document')
               }}</span>
             </div>
           </div>
-          <nav class="page-nav" aria-label="Page navigation">
+          <nav class="page-nav" [attr.aria-label]="t('Page navigation')">
             <button
               (click)="changePage(page() - 1)"
               [disabled]="page() <= 1 || busy()"
-              aria-label="Previous page"
+              [attr.aria-label]="t('Previous page')"
             >
-              ← Previous page
+              {{ t('← Previous page') }}
             </button>
             <label
-              >Page
+              >{{ t('Page') }}
               <input
                 type="number"
                 min="1"
@@ -245,23 +319,23 @@
                 [value]="page()"
                 (change)="changePage(+$any($event.target).value)"
                 [disabled]="busy()"
-                aria-label="Page number"
+                [attr.aria-label]="t('Page number')"
               />
-              of {{ pageCount() }}</label
+              {{ t('of') }} {{ pageCount() }}</label
             >
             <button
               (click)="changePage(page() + 1)"
               [disabled]="page() >= pageCount() || busy()"
-              aria-label="Next page"
+              [attr.aria-label]="t('Next page')"
             >
-              Next page →
+              {{ t('Next page →') }}
             </button>
           </nav>
         </div>
         <div class="tools">
           <div class="detection-status" role="status" aria-live="polite">
             @if (searching()) {
-              <span class="spinner small"></span><span>Finding chessboards…</span>
+              <span class="spinner small"></span><span>{{ t('Finding chessboards…') }}</span>
             } @else {
               <span class="status-dot" [class.found]="regions().length > 0"></span
               ><span>{{ boardLabel() }}</span>
@@ -271,28 +345,32 @@
             <button
               (click)="pageZoom.set(pageZoom() === 1 ? 1.5 : pageZoom() === 1.5 ? 2 : 1)"
               [disabled]="busy()"
-              aria-label="Change page zoom"
+              [attr.aria-label]="t('Change page zoom')"
             >
-              {{ pageZoom() === 1 ? 'Fit page' : pageZoom() * 100 + '%' }}</button
+              {{ pageZoom() === 1 ? t('Fit page') : pageZoom() * 100 + '%' }}</button
             ><button
               [class.active]="showFrames()"
               [attr.aria-pressed]="showFrames()"
               (click)="showFrames.set(!showFrames())"
             >
-              Highlight boards</button
-            ><button (click)="rotate()" [disabled]="busy()" aria-label="Rotate page 90 degrees">
-              ↻ Rotate
+              {{ t('Highlight boards') }}</button
+            ><button
+              (click)="rotate()"
+              [disabled]="busy()"
+              [attr.aria-label]="t('Rotate page 90 degrees')"
+            >
+              {{ t('↻ Rotate') }}
             </button>
           </div>
         </div>
         @if (detectionError()) {
-          <p class="notice" role="alert">{{ detectionError() }}</p>
+          <p class="notice" role="alert">{{ t(detectionError()) }}</p>
         }
         @if (!searching() && !busy() && !regions().length && !detectionError()) {
-          <p class="notice">No boards found on this page. Try another page or file.</p>
+          <p class="notice">{{ t('No boards found on this page. Try another page or file.') }}</p>
         }
         @if (regions().length && !busy()) {
-          <p class="enlarge-instruction">Click to enlarge diagram</p>
+          <p class="enlarge-instruction">{{ t('Click to enlarge diagram') }}</p>
         }
         <div class="page-stage" [attr.aria-busy]="busy()">
           <div
@@ -305,7 +383,7 @@
             <canvas
               #pageCanvas
               [style.filter]="filter()"
-              aria-label="Current document page"
+              [attr.aria-label]="t('Current document page')"
             ></canvas>
             @for (region of regions(); track $index) {
               <button
@@ -316,9 +394,11 @@
                 [style.width.%]="region.width * 100"
                 [style.height.%]="region.height * 100"
                 (click)="openDetail($index, $event.currentTarget)"
-                [attr.aria-label]="'Enlarge diagram ' + ($index + 1)"
+                [attr.aria-label]="t('Enlarge diagram') + ' ' + ($index + 1)"
               >
-                <span class="region-hint" aria-hidden="true">Click to enlarge diagram</span>
+                <span class="region-hint" aria-hidden="true">{{
+                  t('Click to enlarge diagram')
+                }}</span>
                 <span class="region-number"
                   >{{ $index + 1 }} <span aria-hidden="true">↗</span></span
                 >
@@ -327,16 +407,17 @@
           </div>
           @if (busy()) {
             <div class="stage-loading" role="status">
-              <span class="spinner"></span>Preparing page…
+              <span class="spinner"></span>{{ t('Preparing page…') }}
             </div>
           }
         </div>
         <div class="below-page">
-          <span>Click to enlarge diagram</span><span>← → &nbsp; Switch pages</span>
+          <span>{{ t('Click to enlarge diagram') }}</span
+          ><span>← → &nbsp; {{ t('Switch pages') }}</span>
         </div>
         <div class="render-controls">
           <label
-            >Brightness
+            >{{ t('Brightness') }}
             <input
               type="range"
               min="0.5"
@@ -346,7 +427,7 @@
               (input)="adjust('brightness', $event)"
           /></label>
           <label
-            >Contrast
+            >{{ t('Contrast') }}
             <input
               type="range"
               min="0.7"
@@ -355,13 +436,13 @@
               [value]="contrast()"
               (input)="adjust('contrast', $event)"
           /></label>
-          <button class="plain" (click)="reset()">Reset</button>
+          <button class="plain" (click)="reset()">{{ t('Reset') }}</button>
         </div>
       </section>
       @if (busy() && !pageCount() && !passwordNeeded()) {
         <div class="initial-loading" role="status">
           <span class="spinner"></span>
-          <h1>Opening document…</h1>
+          <h1>{{ t('Opening document…') }}</h1>
           <p>{{ fileName() }}</p>
         </div>
       }
@@ -369,10 +450,10 @@
   </main>
   <footer class="app-footer">
     <span>Chess Diagrams</span
-    ><span>Worksheets, positions and video lessons for chess coaches.</span>
+    ><span>{{ t('Worksheets, positions and video lessons for chess coaches.') }}</span>
   </footer>
   @if (dragging()) {
-    <div class="drop-overlay">Drop the file to open it</div>
+    <div class="drop-overlay">{{ t('Drop the file to open it') }}</div>
   }
 </div>
 
@@ -386,19 +467,29 @@
 >
   <div class="detail-toolbar">
     <button #closeButton (click)="closeDetail()" class="back-button">
-      ← <span>Back to page</span>
+      ← <span>{{ t('Back to page') }}</span>
     </button>
     <h2 id="diagram-title">
-      Diagram {{ (selected() ?? 0) + 1 }} <span>/ {{ regions().length }}</span>
+      {{ t('Diagram') }} {{ (selected() ?? 0) + 1 }} <span>/ {{ regions().length }}</span>
     </h2>
     <div class="detail-actions">
-      <button (click)="setZoom(zoom() - 0.25)" [disabled]="zoom() <= 1" aria-label="Zoom out">
+      <button
+        (click)="setZoom(zoom() - 0.25)"
+        [disabled]="zoom() <= 1"
+        [attr.aria-label]="t('Zoom out')"
+      >
         −</button
-      ><button (click)="setZoom(1)" aria-label="Fit diagram">
+      ><button (click)="setZoom(1)" [attr.aria-label]="t('Fit diagram')">
         {{ (zoom() * 100).toFixed(0) }}%</button
-      ><button (click)="setZoom(zoom() + 0.25)" [disabled]="zoom() >= 4" aria-label="Zoom in">
+      ><button
+        (click)="setZoom(zoom() + 0.25)"
+        [disabled]="zoom() >= 4"
+        [attr.aria-label]="t('Zoom in')"
+      >
         ＋</button
-      ><button (click)="fullscreen()" aria-label="Toggle full screen">⛶ Full screen</button>
+      ><button (click)="fullscreen()" [attr.aria-label]="t('Toggle full screen')">
+        {{ t('⛶ Full screen') }}
+      </button>
     </div>
   </div>
   <div
@@ -417,22 +508,26 @@
         [style.filter]="filter()"
         [style.visibility]="detailBusy() ? 'hidden' : 'visible'"
         role="img"
-        [attr.aria-label]="'Chess diagram ' + ((selected() ?? 0) + 1)"
+        [attr.aria-label]="t('Chess diagram') + ' ' + ((selected() ?? 0) + 1)"
       ></canvas>
     </div>
     @if (detailBusy()) {
-      <div class="stage-loading" role="status"><span class="spinner"></span>Enlarging diagram…</div>
+      <div class="stage-loading" role="status">
+        <span class="spinner"></span>{{ t('Enlarging diagram…') }}
+      </div>
     }
   </div>
   <div class="detail-footer">
     <button (click)="nextDetail(-1)" [disabled]="selected() === 0 || detailBusy()">
-      ← Previous diagram</button
-    ><span>Page {{ page() }} <span class="detail-hint">· ← → diagrams · Esc to return</span></span
+      {{ t('← Previous diagram') }}</button
+    ><span
+      >{{ t('Page') }} {{ page() }}
+      <span class="detail-hint">{{ t('· ← → diagrams · Esc to return') }}</span></span
     ><button
       (click)="nextDetail(1)"
       [disabled]="selected() === regions().length - 1 || detailBusy()"
     >
-      Next diagram →
+      {{ t('Next diagram →') }}
     </button>
   </div>
 </div>
@@ -445,13 +540,13 @@
       aria-labelledby="password-title"
       (submit)="$event.preventDefault(); submitPassword(password.value)"
     >
-      <h2 id="password-title">PDF password</h2>
-      <p>{{ passwordHint() }}</p>
-      <label for="pdf-password">Document password</label
+      <h2 id="password-title">{{ t('PDF password') }}</h2>
+      <p>{{ t(passwordHint()) }}</p>
+      <label for="pdf-password">{{ t('Document password') }}</label
       ><input #password id="pdf-password" type="password" required autocomplete="off" />
       <div>
-        <button type="button" (click)="cancelPassword()">Cancel</button
-        ><button class="primary" type="submit">Open</button>
+        <button type="button" (click)="cancelPassword()">{{ t('Cancel') }}</button
+        ><button class="primary" type="submit">{{ t('Open') }}</button>
       </div>
     </form>
   </div>

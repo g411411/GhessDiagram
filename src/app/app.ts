@@ -14,20 +14,54 @@ import type {
   RenderTask,
 } from 'pdfjs-dist';
 import { Region } from './detector';
+import { Language, readLanguage, translations, LANGUAGE_STORAGE_KEY } from './i18n';
 import { downloadLibraryPdf } from './download-library';
 import { VIDEO_LIBRARY } from './video-library';
 import { PDF_LIBRARY, LibraryEntry } from './pdf-library';
 
 @Component({ selector: 'app-root', templateUrl: './app.html', styleUrl: './app.css' })
 export class App implements OnDestroy {
+  readonly language = signal<Language>(readLanguage());
+  readonly draftLanguage = signal<Language>(this.language());
+  readonly saveNotice = signal('');
+  t(text: string): string {
+    return translations[this.language()][text] ?? text;
+  }
+  constructor() {
+    this.updateDocumentLanguage();
+  }
+  private updateDocumentLanguage() {
+    document.documentElement.lang = this.language();
+    document.title = this.t('Chess Diagrams — chess in focus');
+  }
+  chooseLanguage(value: string) {
+    if (value === 'en' || value === 'ru' || value === 'es') {
+      this.draftLanguage.set(value);
+      this.saveNotice.set('');
+    }
+  }
+  saveLanguage() {
+    this.language.set(this.draftLanguage());
+    this.updateDocumentLanguage();
+    try {
+      localStorage.setItem(LANGUAGE_STORAGE_KEY, this.language());
+      this.saveNotice.set('Language saved.');
+    } catch {
+      this.saveNotice.set(
+        'Language changed for this visit. Your browser could not save the preference.',
+      );
+    }
+  }
+
   readonly sections = [
     { id: 'pdf', label: 'PDF Library', panel: 'pdf-library' },
     { id: 'videos', label: 'Video Library', panel: 'video-library' },
     { id: 'local', label: 'Open local file', panel: 'local-panel' },
     { id: 'help', label: 'Help', panel: 'help-panel' },
+    { id: 'settings', label: 'Settings', panel: 'settings-panel' },
   ] as const;
-  readonly activeTab = signal<'pdf' | 'videos' | 'local' | 'help'>('local');
-  selectTab(tab: 'pdf' | 'videos' | 'local' | 'help') {
+  readonly activeTab = signal<'pdf' | 'videos' | 'local' | 'help' | 'settings'>('local');
+  selectTab(tab: 'pdf' | 'videos' | 'local' | 'help' | 'settings') {
     this.closeDetail();
     if (tab !== 'pdf') this.cancelLibraryRequest();
     this.activeTab.set(tab);
@@ -71,7 +105,9 @@ export class App implements OnDestroy {
   readonly documentOrigin = signal<'local' | 'library'>('local');
   readonly filteredLibrary = computed(() =>
     this.library.filter((entry) =>
-      entry.title.toLowerCase().includes(this.libraryQuery().trim().toLowerCase()),
+      (this.t(entry.title) + ' ' + entry.title)
+        .toLowerCase()
+        .includes(this.libraryQuery().trim().toLowerCase()),
     ),
   );
   private libraryRequest?: AbortController;
@@ -139,7 +175,9 @@ export class App implements OnDestroy {
   readonly passwordHint = signal('');
   readonly filter = computed(() => `brightness(${this.brightness()}) contrast(${this.contrast()})`);
   readonly boardLabel = computed(() =>
-    this.regions().length ? `${this.regions().length} diagrams on this page` : 'No diagrams found',
+    this.regions().length
+      ? this.t('Diagrams on this page:') + ' ' + this.regions().length
+      : this.t('No diagrams found'),
   );
   private pdf?: PDFDocumentProxy;
   private loading?: PDFDocumentLoadingTask;

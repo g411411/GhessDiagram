@@ -84,3 +84,6 @@ PDF Library, Video Library, Open local file and Help are separate panels. Select
 
 Use npm run build:cloudflare and deploy dist/ChessDiagrams/browser. This build splits PDFs larger than 25 MiB into verified smaller assets and reassembles them in the browser; the original source PDFs remain unchanged. Exact GitHub integration settings are in [Cloudflare deployment](docs/CLOUDFLARE.md).
 
+## Interface language
+
+Settings contains English, Русский and Español with an explicit Save action. The entire Settings panel and its tab label stay in English. Other controls, help, library labels, accessible names, status text and errors switch language after Save. The preference is stored locally per browser and website; unsupported or blocked storage falls back safely. Source PDF contents, filenames and the actual YouTube videos are not translated. Language changes preserve the open document and current page.

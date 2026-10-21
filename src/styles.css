@@ -164,3 +164,64 @@ app-root [role='tabpanel'][hidden] {
     margin: 20px 12px;
   }
 }
+app-root .settings-panel {
+  max-width: 900px;
+  margin: 32px auto;
+  padding: 28px;
+  background: #fffefa;
+  border: 1px solid #d5e0d0;
+  border-radius: 12px;
+  font-size: 17px;
+  line-height: 1.6;
+}
+app-root .settings-panel h1 {
+  margin-top: 0;
+}
+app-root .settings-panel form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin-top: 24px;
+}
+app-root .settings-panel select {
+  min-height: 52px;
+  width: 100%;
+  max-width: 380px;
+  padding: 12px 16px;
+  font-size: 18px;
+  color: #173e36;
+  border: 1px solid #7e9b85;
+  border-radius: 8px;
+  background: #fff;
+}
+app-root .settings-panel select:focus-visible {
+  outline: 3px solid #1d927d;
+  outline-offset: 3px;
+}
+app-root .settings-notice {
+  font-weight: 600;
+  color: #23583c;
+}
+@media (max-width: 700px) {
+  app-root .settings-panel {
+    margin: 20px 12px;
+    padding: 22px;
+  }
+  app-root .settings-panel button {
+    min-width: 150px;
+  }
+}
+@media (max-width: 700px) {
+  app-root .section-tabs {
+    flex-wrap: wrap;
+    overflow-x: visible;
+  }
+  app-root .section-tabs [role='tab'] {
+    min-width: 0;
+    max-width: none;
+    flex: 1 1 40%;
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+}
