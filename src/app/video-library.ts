@@ -5,7 +5,17 @@ export interface VideoLesson {
 }
 
 export function isBeginnerLesson(video: VideoLesson): boolean {
-  return /\bbeginners?\b/i.test(video.title + ' ' + (video.description ?? ''));
+  return (
+    /\bbeginners?\b/i.test(video.title + ' ' + (video.description ?? '')) ||
+    ['Pawn Moves — Lichess', 'How to Play Chess — Lichess'].includes(video.title)
+  );
+}
+
+export function videoTitleClass(video: VideoLesson): string {
+  if (/\bcheckmates?\b/i.test(video.title + ' ' + (video.description ?? ''))) {
+    return 'checkmate-title';
+  }
+  return isBeginnerLesson(video) ? 'beginner-title' : '';
 }
 
 export const VIDEO_LIBRARY = [
