@@ -225,3 +225,7 @@ app-root .settings-notice {
     overflow-wrap: anywhere;
   }
 }
+
+#video-library .beginner-title {
+  color: #b91c1c;
+}

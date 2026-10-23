@@ -16,7 +16,7 @@ import type {
 import { Region } from './detector';
 import { Language, readLanguage, translations, LANGUAGE_STORAGE_KEY } from './i18n';
 import { downloadLibraryPdf } from './download-library';
-import { VIDEO_LIBRARY } from './video-library';
+import { VIDEO_LIBRARY, isBeginnerLesson } from './video-library';
 import { PDF_LIBRARY, LibraryEntry } from './pdf-library';
 
 @Component({ selector: 'app-root', templateUrl: './app.html', styleUrl: './app.css' })
@@ -93,6 +93,7 @@ export class App implements OnDestroy {
   }
 
   readonly videos = VIDEO_LIBRARY;
+  readonly isBeginnerLesson = isBeginnerLesson;
   readonly videosVisible = signal(false);
   toggleVideos() {
     this.selectTab('videos');

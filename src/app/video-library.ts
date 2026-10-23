@@ -1,3 +1,13 @@
+export interface VideoLesson {
+  title: string;
+  url: string;
+  description?: string;
+}
+
+export function isBeginnerLesson(video: VideoLesson): boolean {
+  return /\bbeginners?\b/i.test(video.title + ' ' + (video.description ?? ''));
+}
+
 export const VIDEO_LIBRARY = [
   {
     title: 'Learn How to Play Chess for Beginners in Less Than 8 Minutes',
@@ -40,4 +50,12 @@ export const VIDEO_LIBRARY = [
     url: 'https://lichess.org/video?tags=beginner/fundamentals/visualization',
   },
   { title: '7 Most Common Chess Mistakes', url: 'https://youtu.be/SXrKRA_KZ5k' },
+  {
+    title: 'How to Play Chess: Chess Rules for Beginners | ChessKid',
+    url: 'https://youtu.be/YdnvlntAQH8?si=UBBnM4aZLXF2FDCe',
+  },
+  {
+    title: 'Lichess Tutorial for Beginners',
+    url: 'https://youtu.be/_4KBwhbbR0Y?si=FJCt0AXtfpgGMPZS',
+  },
 ] as const;

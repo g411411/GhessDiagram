@@ -299,6 +299,14 @@ const entries: Record<string, readonly [string, string]> = {
   MB: ['МБ', 'MB'],
 };
 Object.assign(entries, {
+  'How to Play Chess: Chess Rules for Beginners | ChessKid': [
+    'Как играть в шахматы: правила для начинающих | ChessKid',
+    'Cómo jugar al ajedrez: reglas para principiantes | ChessKid',
+  ],
+  'Lichess Tutorial for Beginners': [
+    'Lichess: руководство для начинающих',
+    'Guía de Lichess para principiantes',
+  ],
   'How to Checkmate with a King and Rook': ['Мат королём и ладьёй', 'Mate con rey y torre'],
   'How to Checkmate with Two Bishops': ['Мат двумя слонами', 'Mate con dos alfiles'],
   'Knight and Bishop Checkmate': ['Мат конём и слоном', 'Mate con caballo y alfil'],
@@ -342,6 +350,9 @@ Object.assign(entries, {
 });
 export const translations: Record<Language, Record<string, string>> = {
   uk: {
+    'How to Play Chess: Chess Rules for Beginners | ChessKid':
+      'Як грати в шахи: правила для початківців | ChessKid',
+    'Lichess Tutorial for Beginners': 'Lichess: посібник для початківців',
     'Chess Diagrams — home': 'Chess Diagrams — головна',
     'Chess Diagrams — chess in focus': 'Chess Diagrams — шахи крупним планом',
     'TOOLS FOR CHESS COACHES': 'ІНСТРУМЕНТИ ДЛЯ ШАХОВИХ ТРЕНЕРІВ',
@@ -530,6 +541,9 @@ export const translations: Record<Language, Record<string, string>> = {
       'Виберіть «Відеоуроки», потім «Дивитися». Матеріал відкриється в іншій вкладці; поверніться сюди, щоб продовжити урок.',
   },
   vi: {
+    'How to Play Chess: Chess Rules for Beginners | ChessKid':
+      'Cách chơi cờ vua: luật chơi cho người mới | ChessKid',
+    'Lichess Tutorial for Beginners': 'Hướng dẫn Lichess cho người mới',
     'Chess Diagrams — home': 'Chess Diagrams — trang chủ',
     'Chess Diagrams — chess in focus': 'Chess Diagrams — cận cảnh cờ vua',
     'TOOLS FOR CHESS COACHES': 'CÔNG CỤ DÀNH CHO HUẤN LUYỆN VIÊN CỜ VUA',
