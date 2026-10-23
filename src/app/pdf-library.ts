@@ -25,11 +25,6 @@ export const PDF_LIBRARY: readonly LibraryEntry[] = [
     sizeMB: 0.77,
   },
   {
-    title: 'Hopkins',
-    file: 'hopkins.pdf',
-    sizeMB: 0.19,
-  },
-  {
     title: 'Mate in One — Worksheet 1',
     file: 'mat 1 move1.pdf',
     sizeMB: 2.61,

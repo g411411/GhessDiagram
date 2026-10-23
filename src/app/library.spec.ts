@@ -15,8 +15,8 @@ async function app() {
 
 describe('Website PDF library', () => {
   it('offers all twelve distinct PDFs including answers', () => {
-    expect(PDF_LIBRARY).toHaveLength(12);
-    expect(new Set(PDF_LIBRARY.map((entry) => entry.file)).size).toBe(12);
+    expect(PDF_LIBRARY).toHaveLength(11);
+    expect(new Set(PDF_LIBRARY.map((entry) => entry.file)).size).toBe(11);
     expect(PDF_LIBRARY.filter((entry) => entry.title.includes('Answers'))).toHaveLength(3);
   });
   it('downloads a selected PDF relative to the deployed application and opens the existing viewer', async () => {
