@@ -35,7 +35,7 @@ export class App implements OnDestroy {
     document.title = this.t('Chess Diagrams — chess in focus');
   }
   chooseLanguage(value: string) {
-    if (value === 'en' || value === 'ru' || value === 'es') {
+    if (value === 'en' || value === 'ru' || value === 'es' || value === 'uk' || value === 'vi') {
       this.draftLanguage.set(value);
       this.saveNotice.set('');
     }

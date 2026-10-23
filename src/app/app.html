@@ -125,7 +125,7 @@
           <p>
             {{
               t(
-                'Choose a lesson and click Watch on YouTube. Return to this tab to continue working with diagrams.'
+                'Choose a lesson and click Watch. Return to this tab to continue working with diagrams.'
               )
             }}
           </p>
@@ -134,7 +134,7 @@
       <div class="library-grid">
         @for (video of videos; track video.url) {
           <article class="library-card">
-            <span>{{ t('YouTube lesson') }}</span>
+            <span>{{ t('Video lesson') }}</span>
             <h2>{{ t(video.title) }}</h2>
             <a
               class="button primary"
@@ -142,15 +142,15 @@
               target="_blank"
               rel="noopener noreferrer"
               [attr.aria-label]="
-                t('Watch') + ' ' + t(video.title) + ' ' + t('on YouTube (opens in a new tab)')
+                t('Watch') + ' ' + t(video.title) + ' ' + t('(opens in a new tab)')
               "
-              >{{ t('Watch on YouTube ↗') }}</a
+              >{{ t('Watch ↗') }}</a
             >
           </article>
         }
       </div>
       <p class="library-note">
-        {{ t('YouTube is an external website. An internet connection is required.') }}
+        {{ t('Videos open on YouTube or Lichess. An internet connection is required.') }}
       </p>
     </section>
 
@@ -175,6 +175,8 @@
           <option value="en" lang="en">English</option>
           <option value="ru" lang="ru">Русский</option>
           <option value="es" lang="es">Español</option>
+          <option value="uk" lang="uk">Українська</option>
+          <option value="vi" lang="vi">Tiếng Việt</option>
         </select>
         <button type="submit" class="primary">Save</button>
       </form>
@@ -222,7 +224,7 @@
           <strong>{{ t('Play a video:') }}</strong>
           {{
             t(
-              'choose Video Library, then Watch on YouTube. The video opens in another tab; return here to continue your lesson.'
+              'choose Video Library, then Watch. The lesson opens in another tab; return here to continue your lesson.'
             )
           }}
         </li>

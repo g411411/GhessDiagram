@@ -19,4 +19,25 @@ export const VIDEO_LIBRARY = [
     title: 'King & Queen Checkmate | ChessKid',
     url: 'https://youtu.be/WUEgprkpj10?si=11kG91Sfif_rqRpT',
   },
+  { title: 'How to Checkmate with a King and Rook', url: 'https://youtu.be/NhXbCuM1dgY' },
+  { title: 'How to Checkmate with Two Bishops', url: 'https://youtu.be/91cXhK6qnAQ' },
+  { title: 'Knight and Bishop Checkmate', url: 'https://youtu.be/dHnz4U7qjfk' },
+  { title: 'Top 10 Fastest Checkmates in History!', url: 'https://youtu.be/qlU3D_NcYd4' },
+  {
+    title: 'King and Queen Checkmate — Lichess',
+    url: 'https://lichess.org/video/B4R3gF6pylc?tags=beginner/fundamentals',
+  },
+  {
+    title: 'Pawn Moves — Lichess',
+    url: 'https://lichess.org/video/yellEkdVtY8?tags=beginner/fundamentals',
+  },
+  {
+    title: 'How to Play Chess — Lichess',
+    url: 'https://lichess.org/video/SM2fcenx7KU?tags=beginner/fundamentals',
+  },
+  {
+    title: 'Visualization Lessons — Lichess',
+    url: 'https://lichess.org/video?tags=beginner/fundamentals/visualization',
+  },
+  { title: '7 Most Common Chess Mistakes', url: 'https://youtu.be/SXrKRA_KZ5k' },
 ] as const;
