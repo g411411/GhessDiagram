@@ -2,6 +2,7 @@ export interface VideoLesson {
   title: string;
   url: string;
   description?: string;
+  titleColor?: 'red' | 'blue' | 'green';
 }
 
 export function isBeginnerLesson(video: VideoLesson): boolean {
@@ -12,6 +13,11 @@ export function isBeginnerLesson(video: VideoLesson): boolean {
 }
 
 export function videoTitleClass(video: VideoLesson): string {
+  if (video.titleColor) {
+    return { red: 'beginner-title', blue: 'checkmate-title', green: 'visualization-title' }[
+      video.titleColor
+    ];
+  }
   if (/\bcheckmates?\b/i.test(video.title + ' ' + (video.description ?? ''))) {
     return 'checkmate-title';
   }
@@ -57,10 +63,31 @@ export const VIDEO_LIBRARY = [
   },
   {
     title: 'Visualization Lessons — Lichess',
+    titleColor: 'green',
     url: 'https://lichess.org/video?tags=beginner/fundamentals/visualization',
   },
   {
     title: 'How to Play Chess: Chess Rules for Beginners | ChessKid',
     url: 'https://youtu.be/YdnvlntAQH8?si=UBBnM4aZLXF2FDCe',
+  },
+  {
+    title: 'Checkmate | Chess Terms | ChessKid',
+    url: 'https://youtu.be/Svswkqslr9I?si=XlH4h7GI4NEfdf-M',
+    titleColor: 'red',
+  },
+  {
+    title: 'Top 3 Best Chess Openings for Beginners | ChessKid',
+    url: 'https://youtu.be/IcGt2A1b3NE?si=WdKJTYqxtX5Qalqa',
+    titleColor: 'blue',
+  },
+  {
+    title: 'The Basic Tactics Of Chess For Kids!',
+    url: 'https://youtu.be/10IC86NSQZ8?si=En_a3EC0ZTlt6o5N',
+    titleColor: 'blue',
+  },
+  {
+    title: 'How to Defend Against Quick Mates & Traps',
+    url: 'https://youtu.be/TIqJKO71400?si=C6y4Fc9b9sVQl7MX',
+    titleColor: 'blue',
   },
 ] as const;

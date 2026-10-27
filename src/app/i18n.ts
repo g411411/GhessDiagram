@@ -299,6 +299,22 @@ const entries: Record<string, readonly [string, string]> = {
   MB: ['МБ', 'MB'],
 };
 Object.assign(entries, {
+  'Checkmate | Chess Terms | ChessKid': [
+    'Мат | Шахматные термины | ChessKid',
+    'Jaque mate | Términos de ajedrez | ChessKid',
+  ],
+  'Top 3 Best Chess Openings for Beginners | ChessKid': [
+    'Три лучших дебюта для начинающих | ChessKid',
+    'Las 3 mejores aperturas para principiantes | ChessKid',
+  ],
+  'The Basic Tactics Of Chess For Kids!': [
+    'Основные шахматные тактики для детей!',
+    '¡Tácticas básicas de ajedrez para niños!',
+  ],
+  'How to Defend Against Quick Mates & Traps': [
+    'Как защититься от быстрых матов и ловушек',
+    'Cómo defenderse de mates rápidos y trampas',
+  ],
   'How to Play Chess: Chess Rules for Beginners | ChessKid': [
     'Как играть в шахматы: правила для начинающих | ChessKid',
     'Cómo jugar al ajedrez: reglas para principiantes | ChessKid',
@@ -350,6 +366,11 @@ Object.assign(entries, {
 });
 export const translations: Record<Language, Record<string, string>> = {
   uk: {
+    'Checkmate | Chess Terms | ChessKid': 'Мат | Шахові терміни | ChessKid',
+    'Top 3 Best Chess Openings for Beginners | ChessKid':
+      'Три найкращі дебюти для початківців | ChessKid',
+    'The Basic Tactics Of Chess For Kids!': 'Основні шахові тактики для дітей!',
+    'How to Defend Against Quick Mates & Traps': 'Як захищатися від швидких матів і пасток',
     'How to Play Chess: Chess Rules for Beginners | ChessKid':
       'Як грати в шахи: правила для початківців | ChessKid',
     'Lichess Tutorial for Beginners': 'Lichess: посібник для початківців',
@@ -541,6 +562,11 @@ export const translations: Record<Language, Record<string, string>> = {
       'Виберіть «Відеоуроки», потім «Дивитися». Матеріал відкриється в іншій вкладці; поверніться сюди, щоб продовжити урок.',
   },
   vi: {
+    'Checkmate | Chess Terms | ChessKid': 'Chiếu hết | Thuật ngữ cờ vua | ChessKid',
+    'Top 3 Best Chess Openings for Beginners | ChessKid':
+      '3 khai cuộc hay nhất cho người mới | ChessKid',
+    'The Basic Tactics Of Chess For Kids!': 'Các chiến thuật cờ vua cơ bản cho trẻ em!',
+    'How to Defend Against Quick Mates & Traps': 'Cách phòng thủ trước chiếu hết nhanh và bẫy',
     'How to Play Chess: Chess Rules for Beginners | ChessKid':
       'Cách chơi cờ vua: luật chơi cho người mới | ChessKid',
     'Lichess Tutorial for Beginners': 'Hướng dẫn Lichess cho người mới',

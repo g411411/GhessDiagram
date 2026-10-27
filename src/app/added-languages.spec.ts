@@ -34,7 +34,7 @@ for (const [language, help] of [
     app.selectTab('videos');
     fixture.detectChanges();
     const links = fixture.nativeElement.querySelectorAll('#video-library a');
-    expect(links.length).toBe(14);
+    expect(links.length).toBe(18);
     expect(
       [...links].every((link: any) => link.target === '_blank' && link.href.startsWith('https://')),
     ).toBe(true);
@@ -46,6 +46,6 @@ for (const [language, help] of [
       true,
     );
     for (const video of VIDEO_LIBRARY) expect(translations[language][video.title]).toBeTruthy();
-    expect(new Set(VIDEO_LIBRARY.map((video) => video.url)).size).toBe(14);
+    expect(new Set(VIDEO_LIBRARY.map((video) => video.url)).size).toBe(18);
   });
 }
