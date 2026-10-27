@@ -59,13 +59,8 @@ export const VIDEO_LIBRARY = [
     title: 'Visualization Lessons — Lichess',
     url: 'https://lichess.org/video?tags=beginner/fundamentals/visualization',
   },
-  { title: '7 Most Common Chess Mistakes', url: 'https://youtu.be/SXrKRA_KZ5k' },
   {
     title: 'How to Play Chess: Chess Rules for Beginners | ChessKid',
     url: 'https://youtu.be/YdnvlntAQH8?si=UBBnM4aZLXF2FDCe',
-  },
-  {
-    title: 'Lichess Tutorial for Beginners',
-    url: 'https://youtu.be/_4KBwhbbR0Y?si=FJCt0AXtfpgGMPZS',
   },
 ] as const;

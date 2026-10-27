@@ -20,9 +20,9 @@ it('highlights beginner and requested introductory titles even when the interfac
   app.selectTab('videos');
   fixture.detectChanges();
   const titles = fixture.nativeElement.querySelectorAll('#video-library h2.beginner-title');
-  expect(titles.length).toBe(5);
+  expect(titles.length).toBe(4);
   const text = [...titles].map((title: any) => title.textContent);
-  expect(text.filter((title: string) => title.includes('начинающих')).length).toBe(3);
+  expect(text.filter((title: string) => title.includes('начинающих')).length).toBe(2);
   expect(text).toContain('Ходы пешек — Lichess');
   expect(text).toContain('Как играть в шахматы — Lichess');
   const blue = fixture.nativeElement.querySelectorAll('#video-library h2.checkmate-title');
