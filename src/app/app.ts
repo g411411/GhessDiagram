@@ -93,6 +93,30 @@ export class App implements OnDestroy {
   }
 
   readonly videos = VIDEO_LIBRARY;
+  readonly videoColorFilter = signal<'all' | 'green' | 'red' | 'blue' | 'black'>('all');
+  readonly filteredVideos = computed(() => {
+    const filter = this.videoColorFilter();
+    const classes = {
+      green: 'visualization-title',
+      red: 'beginner-title',
+      blue: 'checkmate-title',
+      black: '',
+    };
+    return this.videos.filter(
+      (video) => filter === 'all' || videoTitleClass(video) === classes[filter],
+    );
+  });
+  chooseVideoColor(value: string) {
+    if (
+      value === 'all' ||
+      value === 'green' ||
+      value === 'red' ||
+      value === 'blue' ||
+      value === 'black'
+    ) {
+      this.videoColorFilter.set(value);
+    }
+  }
   readonly videoTitleClass = videoTitleClass;
   readonly videosVisible = signal(false);
   toggleVideos() {

@@ -237,3 +237,33 @@ app-root .settings-notice {
 #video-library .visualization-title {
   color: #15803d;
 }
+
+#video-library h2:not(.beginner-title):not(.checkmate-title):not(.visualization-title) {
+  color: #222;
+}
+.video-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  font-size: 18px;
+}
+.video-filter label {
+  font-weight: 600;
+}
+.video-filter select {
+  min-height: 52px;
+  min-width: 200px;
+  max-width: 100%;
+  padding: 12px 16px;
+  font: inherit;
+  color: #173e36;
+  background: white;
+  border: 1px solid #7e9b85;
+  border-radius: 8px;
+}
+.video-filter select:focus-visible {
+  outline: 3px solid #1d927d;
+  outline-offset: 3px;
+}

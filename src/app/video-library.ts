@@ -35,10 +35,12 @@ export const VIDEO_LIBRARY = [
   },
   {
     title: 'How to win Chess in 2 moves!',
+    titleColor: 'red',
     url: 'https://youtu.be/_yDC2th_Trk?si=1eWBK_Yidi2FwX86',
   },
   {
     title: 'How Do I Castle in Chess? | Castling | ChessKid',
+    titleColor: 'red',
     url: 'https://youtu.be/4dLZ5bv2tn8?si=5vsMORku_Z-nXFgb',
   },
   {

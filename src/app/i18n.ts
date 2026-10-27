@@ -299,6 +299,12 @@ const entries: Record<string, readonly [string, string]> = {
   MB: ['МБ', 'MB'],
 };
 Object.assign(entries, {
+  'Filter by color': ['Фильтр по цвету', 'Filtrar por color'],
+  'All videos': ['Все видео', 'Todos los vídeos'],
+  Green: ['Зелёный', 'Verde'],
+  Red: ['Красный', 'Rojo'],
+  Blue: ['Синий', 'Azul'],
+  Black: ['Чёрный', 'Negro'],
   'Checkmate | Chess Terms | ChessKid': [
     'Мат | Шахматные термины | ChessKid',
     'Jaque mate | Términos de ajedrez | ChessKid',
@@ -366,6 +372,12 @@ Object.assign(entries, {
 });
 export const translations: Record<Language, Record<string, string>> = {
   uk: {
+    'Filter by color': 'Фільтр за кольором',
+    'All videos': 'Усі відео',
+    Green: 'Зелений',
+    Red: 'Червоний',
+    Blue: 'Синій',
+    Black: 'Чорний',
     'Checkmate | Chess Terms | ChessKid': 'Мат | Шахові терміни | ChessKid',
     'Top 3 Best Chess Openings for Beginners | ChessKid':
       'Три найкращі дебюти для початківців | ChessKid',
@@ -562,6 +574,12 @@ export const translations: Record<Language, Record<string, string>> = {
       'Виберіть «Відеоуроки», потім «Дивитися». Матеріал відкриється в іншій вкладці; поверніться сюди, щоб продовжити урок.',
   },
   vi: {
+    'Filter by color': 'Lọc theo màu',
+    'All videos': 'Tất cả video',
+    Green: 'Xanh lá',
+    Red: 'Đỏ',
+    Blue: 'Xanh dương',
+    Black: 'Đen',
     'Checkmate | Chess Terms | ChessKid': 'Chiếu hết | Thuật ngữ cờ vua | ChessKid',
     'Top 3 Best Chess Openings for Beginners | ChessKid':
       '3 khai cuộc hay nhất cho người mới | ChessKid',

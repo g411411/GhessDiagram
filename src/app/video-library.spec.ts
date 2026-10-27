@@ -20,7 +20,7 @@ it('highlights beginner and requested introductory titles even when the interfac
   app.selectTab('videos');
   fixture.detectChanges();
   const titles = fixture.nativeElement.querySelectorAll('#video-library h2.beginner-title');
-  expect(titles.length).toBe(5);
+  expect(titles.length).toBe(7);
   const text = [...titles].map((title: any) => title.textContent);
   expect(text.filter((title: string) => title.includes('начинающих')).length).toBe(2);
   expect(text).toContain('Ходы пешек — Lichess');
@@ -56,4 +56,41 @@ it('honors explicit title colors before automatic beginner or checkmate rules', 
   expect(videoTitleClass({ title: 'Visualization', url: '', titleColor: 'green' })).toBe(
     'visualization-title',
   );
+});
+
+it('filters visible video cards by color and preserves the filter across language changes', async () => {
+  localStorage.clear();
+  await TestBed.configureTestingModule({ imports: [App] }).compileComponents();
+  const fixture = TestBed.createComponent(App);
+  const app = fixture.componentInstance;
+  app.selectTab('videos');
+  fixture.detectChanges();
+  const select: HTMLSelectElement = fixture.nativeElement.querySelector('#video-color-filter');
+  for (const [color, count] of [
+    ['green', 1],
+    ['red', 7],
+    ['blue', 10],
+    ['black', 0],
+    ['all', 18],
+  ] as const) {
+    select.value = color;
+    select.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelectorAll('#video-library .library-card').length).toBe(
+      count,
+    );
+  }
+  app.chooseVideoColor('green');
+  app.chooseLanguage('es');
+  app.saveLanguage();
+  fixture.detectChanges();
+  expect(select.value).toBe('green');
+  expect(select.options[1].text).toBe('Verde');
+  expect(fixture.nativeElement.querySelector('#video-library h2').textContent).toBe(
+    'Lecciones de visualización — Lichess',
+  );
+  app.chooseVideoColor('invalid');
+  expect(app.videoColorFilter()).toBe('green');
+  localStorage.clear();
+  document.documentElement.lang = 'en';
 });

@@ -131,8 +131,22 @@
           </p>
         </div>
       </div>
+      <div class="video-filter">
+        <label for="video-color-filter">{{ t('Filter by color') }}</label>
+        <select
+          id="video-color-filter"
+          [value]="videoColorFilter()"
+          (change)="chooseVideoColor($any($event.target).value)"
+        >
+          <option value="all">{{ t('All videos') }}</option>
+          <option value="green">{{ t('Green') }}</option>
+          <option value="red">{{ t('Red') }}</option>
+          <option value="blue">{{ t('Blue') }}</option>
+          <option value="black">{{ t('Black') }}</option>
+        </select>
+      </div>
       <div class="library-grid">
-        @for (video of videos; track video.url) {
+        @for (video of filteredVideos(); track video.url) {
           <article class="library-card">
             <span>{{ t('Video lesson') }}</span>
             <h2 [class]="videoTitleClass(video)">{{ t(video.title) }}</h2>
