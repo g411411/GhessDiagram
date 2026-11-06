@@ -68,6 +68,7 @@ const entries: Record<string, readonly [string, string]> = {
     'YouTube es un sitio externo. Se necesita conexión a Internet.',
   ],
   'Help for coaches': ['Справка для тренеров', 'Ayuda para entrenadores'],
+  Version: ['Версия', 'Versión'],
   'Choose a tab above to prepare and present your lesson.': [
     'Выберите вкладку сверху, чтобы подготовить и провести урок.',
     'Elige una pestaña de arriba para preparar e impartir tu clase.',
@@ -432,6 +433,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'YouTube is an external website. An internet connection is required.':
       'YouTube — зовнішній сайт. Потрібне підключення до інтернету.',
     'Help for coaches': 'Довідка для тренерів',
+    Version: 'Версія',
     'Choose a tab above to prepare and present your lesson.':
       'Виберіть вкладку вгорі, щоб підготувати та провести урок.',
     'Choose material:': 'Вибір матеріалу:',
@@ -639,6 +641,7 @@ export const translations: Record<Language, Record<string, string>> = {
     'YouTube is an external website. An internet connection is required.':
       'YouTube là trang web bên ngoài. Cần kết nối Internet.',
     'Help for coaches': 'Trợ giúp dành cho huấn luyện viên',
+    Version: 'Phiên bản',
     'Choose a tab above to prepare and present your lesson.':
       'Chọn một thẻ phía trên để chuẩn bị và trình bày bài học.',
     'Choose material:': 'Chọn tài liệu:',
