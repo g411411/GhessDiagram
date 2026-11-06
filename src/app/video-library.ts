@@ -79,8 +79,8 @@ export const VIDEO_LIBRARY = [
   },
   {
     title: 'Top 3 Best Chess Openings for Beginners | ChessKid',
-    url: 'https://youtu.be/IcGt2A1b3NE?si=WdKJTYqxtX5Qalqa',
-    titleColor: 'blue',
+    url: 'https://youtu.be/IcGt2A1b3NE?si=CJvlXxlf1e8ZbhNf',
+    titleColor: 'green',
   },
   {
     title: 'The Basic Tactics Of Chess For Kids!',
@@ -88,8 +88,18 @@ export const VIDEO_LIBRARY = [
     titleColor: 'blue',
   },
   {
-    title: 'How to Defend Against Quick Mates & Traps',
-    url: 'https://youtu.be/TIqJKO71400?si=C6y4Fc9b9sVQl7MX',
+    title: 'How to Defend Against Quick Mates & Traps | ChessKid',
+    url: 'https://youtu.be/TIqJKO71400?si=JNcxbynu4pbHSNmc',
     titleColor: 'blue',
+  },
+  {
+    title: 'Five Weird Chess Rules to WIN More Games | ChessKid',
+    url: 'https://youtu.be/QcVLAXdh6nQ?si=LxkIPNhFwHqas3xo',
+    titleColor: 'green',
+  },
+  {
+    title: 'How to Play Your First Chess Moves: Part 1 | ChessKid',
+    url: 'https://youtu.be/B7CT0kOm8Jk?si=P9_mnWryXAni0aJf',
+    titleColor: 'red',
   },
 ] as const;

@@ -317,9 +317,17 @@ Object.assign(entries, {
     'Основные шахматные тактики для детей!',
     '¡Tácticas básicas de ajedrez para niños!',
   ],
-  'How to Defend Against Quick Mates & Traps': [
-    'Как защититься от быстрых матов и ловушек',
-    'Cómo defenderse de mates rápidos y trampas',
+  'How to Defend Against Quick Mates & Traps | ChessKid': [
+    'Как защититься от быстрых матов и ловушек | ChessKid',
+    'Cómo defenderse de mates rápidos y trampas | ChessKid',
+  ],
+  'Five Weird Chess Rules to WIN More Games | ChessKid': [
+    'Пять необычных шахматных правил, чтобы чаще побеждать | ChessKid',
+    'Cinco reglas curiosas del ajedrez para ganar más partidas | ChessKid',
+  ],
+  'How to Play Your First Chess Moves: Part 1 | ChessKid': [
+    'Как сделать первые ходы в шахматах: часть 1 | ChessKid',
+    'Cómo hacer tus primeros movimientos de ajedrez: parte 1 | ChessKid',
   ],
   'How to Play Chess: Chess Rules for Beginners | ChessKid': [
     'Как играть в шахматы: правила для начинающих | ChessKid',
@@ -382,7 +390,12 @@ export const translations: Record<Language, Record<string, string>> = {
     'Top 3 Best Chess Openings for Beginners | ChessKid':
       'Три найкращі дебюти для початківців | ChessKid',
     'The Basic Tactics Of Chess For Kids!': 'Основні шахові тактики для дітей!',
-    'How to Defend Against Quick Mates & Traps': 'Як захищатися від швидких матів і пасток',
+    'How to Defend Against Quick Mates & Traps | ChessKid':
+      'Як захищатися від швидких матів і пасток | ChessKid',
+    'Five Weird Chess Rules to WIN More Games | ChessKid':
+      'П’ять незвичних шахових правил, щоб частіше перемагати | ChessKid',
+    'How to Play Your First Chess Moves: Part 1 | ChessKid':
+      'Як зробити перші ходи в шахах: частина 1 | ChessKid',
     'How to Play Chess: Chess Rules for Beginners | ChessKid':
       'Як грати в шахи: правила для початківців | ChessKid',
     'Lichess Tutorial for Beginners': 'Lichess: посібник для початківців',
@@ -584,7 +597,12 @@ export const translations: Record<Language, Record<string, string>> = {
     'Top 3 Best Chess Openings for Beginners | ChessKid':
       '3 khai cuộc hay nhất cho người mới | ChessKid',
     'The Basic Tactics Of Chess For Kids!': 'Các chiến thuật cờ vua cơ bản cho trẻ em!',
-    'How to Defend Against Quick Mates & Traps': 'Cách phòng thủ trước chiếu hết nhanh và bẫy',
+    'How to Defend Against Quick Mates & Traps | ChessKid':
+      'Cách phòng thủ trước đòn chiếu hết nhanh và bẫy | ChessKid',
+    'Five Weird Chess Rules to WIN More Games | ChessKid':
+      'Năm luật cờ vua lạ giúp bạn thắng nhiều ván hơn | ChessKid',
+    'How to Play Your First Chess Moves: Part 1 | ChessKid':
+      'Cách thực hiện những nước cờ đầu tiên: Phần 1 | ChessKid',
     'How to Play Chess: Chess Rules for Beginners | ChessKid':
       'Cách chơi cờ vua: luật chơi cho người mới | ChessKid',
     'Lichess Tutorial for Beginners': 'Hướng dẫn Lichess cho người mới',

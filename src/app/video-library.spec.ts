@@ -20,13 +20,13 @@ it('highlights beginner and requested introductory titles even when the interfac
   app.selectTab('videos');
   fixture.detectChanges();
   const titles = fixture.nativeElement.querySelectorAll('#video-library h2.beginner-title');
-  expect(titles.length).toBe(7);
+  expect(titles.length).toBe(8);
   const text = [...titles].map((title: any) => title.textContent);
   expect(text.filter((title: string) => title.includes('начинающих')).length).toBe(2);
   expect(text).toContain('Ходы пешек — Lichess');
   expect(text).toContain('Как играть в шахматы — Lichess');
   const blue = fixture.nativeElement.querySelectorAll('#video-library h2.checkmate-title');
-  expect(blue.length).toBe(10);
+  expect(blue.length).toBe(9);
   expect(
     [...blue].filter((title: any) => title.textContent.toLowerCase().includes('мат')).length,
   ).toBeGreaterThanOrEqual(7);
@@ -67,11 +67,11 @@ it('filters visible video cards by color and preserves the filter across languag
   fixture.detectChanges();
   const select: HTMLSelectElement = fixture.nativeElement.querySelector('#video-color-filter');
   for (const [color, count] of [
-    ['green', 1],
-    ['red', 7],
-    ['blue', 10],
+    ['green', 3],
+    ['red', 8],
+    ['blue', 9],
     ['black', 0],
-    ['all', 18],
+    ['all', 20],
   ] as const) {
     select.value = color;
     select.dispatchEvent(new Event('change'));
