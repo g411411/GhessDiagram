@@ -100,6 +100,11 @@ export const VIDEO_LIBRARY = [
   {
     title: 'How to Play Your First Chess Moves: Part 1 | ChessKid',
     url: 'https://youtu.be/B7CT0kOm8Jk?si=P9_mnWryXAni0aJf',
-    titleColor: 'red',
+    titleColor: 'blue',
+  },
+  {
+    title: 'How to Play Your First Chess Moves: Part 2 | ChessKid',
+    url: 'https://youtu.be/2mbJyj8zgvI?feature=shared',
+    titleColor: 'blue',
   },
 ] as const;

@@ -330,6 +330,10 @@ Object.assign(entries, {
     'Как сделать первые ходы в шахматах: часть 1 | ChessKid',
     'Cómo hacer tus primeros movimientos de ajedrez: parte 1 | ChessKid',
   ],
+  'How to Play Your First Chess Moves: Part 2 | ChessKid': [
+    'Как сделать первые ходы в шахматах: часть 2 | ChessKid',
+    'Cómo hacer tus primeros movimientos de ajedrez: parte 2 | ChessKid',
+  ],
   'How to Play Chess: Chess Rules for Beginners | ChessKid': [
     'Как играть в шахматы: правила для начинающих | ChessKid',
     'Cómo jugar al ajedrez: reglas para principiantes | ChessKid',
@@ -397,6 +401,8 @@ export const translations: Record<Language, Record<string, string>> = {
       'П’ять незвичних шахових правил, щоб частіше перемагати | ChessKid',
     'How to Play Your First Chess Moves: Part 1 | ChessKid':
       'Як зробити перші ходи в шахах: частина 1 | ChessKid',
+    'How to Play Your First Chess Moves: Part 2 | ChessKid':
+      'Як зробити перші ходи в шахах: частина 2 | ChessKid',
     'How to Play Chess: Chess Rules for Beginners | ChessKid':
       'Як грати в шахи: правила для початківців | ChessKid',
     'Lichess Tutorial for Beginners': 'Lichess: посібник для початківців',
@@ -605,6 +611,8 @@ export const translations: Record<Language, Record<string, string>> = {
       'Năm luật cờ vua lạ giúp bạn thắng nhiều ván hơn | ChessKid',
     'How to Play Your First Chess Moves: Part 1 | ChessKid':
       'Cách thực hiện những nước cờ đầu tiên: Phần 1 | ChessKid',
+    'How to Play Your First Chess Moves: Part 2 | ChessKid':
+      'Cách thực hiện những nước cờ đầu tiên: Phần 2 | ChessKid',
     'How to Play Chess: Chess Rules for Beginners | ChessKid':
       'Cách chơi cờ vua: luật chơi cho người mới | ChessKid',
     'Lichess Tutorial for Beginners': 'Hướng dẫn Lichess cho người mới',
